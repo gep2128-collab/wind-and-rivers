@@ -1,7 +1,7 @@
 """Prueba que podemos extraer datos reales de cada fuente, con descargas muy pequeñas.
 Tests that real data can be extracted from each source, using tiny downloads.
 
-Uso / usage:  python scripts/probar_acceso_datos.py
+Uso / usage:  .venv/Scripts/python scripts/probar_acceso_datos.py
 Guarda las muestras en data/raw/pruebas/ (ignorada por git). No muestra claves.
 """
 from pathlib import Path
@@ -76,7 +76,7 @@ def era5():
     from ecmwf.datastores import Client
 
     c = Client(url="https://cds.climate.copernicus.eu/api", key=key)
-    target = OUT / "era5_lima_202303.nc"
+    target = OUT / "era5_lima_202303.zip"
     c.retrieve(
         "reanalysis-era5-single-levels-monthly-means",
         {

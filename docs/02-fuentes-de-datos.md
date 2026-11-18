@@ -4,7 +4,7 @@
 
 Además se probó cada enlace del catálogo de forma automática: 40 de 48 respondieron bien. ENFEN, GEOBOSQUES, IUCN e IPCC Atlas bloquean robots (error 403) pero abren en el navegador; ANA, LandMark, la API de GFW e IGP no respondieron desde aquí. *Every catalogue link was also tested automatically: 40 of 48 responded. ENFEN, GEOBOSQUES, IUCN and the IPCC Atlas block bots (403) but open in a browser; ANA, LandMark, the GFW Data API and IGP did not respond from here.*
 
-La lista completa de fuentes en formato tabla está en [data/catalogo_fuentes.csv](../data/catalogo_fuentes.csv). El esquema de la base de datos está en [data/schema.sql](../data/schema.sql).
+La lista completa de fuentes en formato tabla está en [data/catalogo-de-fuentes.csv](../data/catalogo-de-fuentes.csv). El esquema de la base de datos está en [data/esquema-base-de-datos.sql](../data/esquema-base-de-datos.sql).
 
 ---
 
@@ -184,7 +184,7 @@ Recomendación: mostrar **escenarios** (SSP2-4.5 y SSP5-8.5) y un "El Niño fuer
 
 1. Crear cuentas gratuitas: Copernicus CDS, NASA Earthdata, FIRMS (MAP_KEY), IUCN Red List, GBIF.
 2. Descargar primero lo más fácil y valioso: índices ONI/ICEN, ERA5 mensual (añadir `t2m`, `tp`, `sst`), OISST mensual, FIRMS y GFED5.
-3. Montar la base de datos ([data/schema.sql](../data/schema.sql)) y escribir los scripts de conversión (incluye el `era5_to_json.py` que la página ya menciona).
+3. Montar la base de datos ([data/esquema-base-de-datos.sql](../data/esquema-base-de-datos.sql)) y escribir los scripts de conversión (incluye el `era5_to_json.py` que la página ya menciona).
 4. Prototipo del simulador de incendio en una región pequeña (por ejemplo, Madre de Dios o Kalimantan Central).
 
 ---
@@ -236,5 +236,5 @@ The source tables in the Spanish section above apply as-is (the links are the sa
 
 1. Create free accounts: Copernicus CDS, NASA Earthdata, FIRMS (MAP_KEY), IUCN Red List, GBIF.
 2. Download the easiest, highest-value data first: ONI/ICEN indices, ERA5 monthly (add `t2m`, `tp`, `sst`), monthly OISST, FIRMS and GFED5.
-3. Set up the database ([data/schema.sql](../data/schema.sql)) and write the conversion scripts (including the `era5_to_json.py` the page already mentions).
+3. Set up the database ([data/esquema-base-de-datos.sql](../data/esquema-base-de-datos.sql)) and write the conversion scripts (including the `era5_to_json.py` the page already mentions).
 4. Prototype the fire simulator on a small area (e.g. Madre de Dios, Peru, or Central Kalimantan).

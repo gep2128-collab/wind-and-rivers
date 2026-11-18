@@ -58,8 +58,23 @@ The map data is in `.js` files instead of `.json` so the page also opens by doub
 
 ## Project: El Niño, Lima and fire (in progress)
 
-- [docs/01-introduccion-introduction.md](docs/01-introduccion-introduction.md): project introduction (Spanish and English).
-- [docs/02-reporte-datos-data-report.md](docs/02-reporte-datos-data-report.md): first data-availability report with download links and the fire-spread formulas.
-- [data/catalogo_fuentes.csv](data/catalogo_fuentes.csv): catalogue of data sources.
-- [data/schema.sql](data/schema.sql): PostgreSQL/PostGIS database schema.
-- [docs/03-licencias-cumplimiento.md](docs/03-licencias-cumplimiento.md): data licences and the compliance checklist. Restricted data goes in `data/restricted/`, which git ignores.
+- [docs/01-introduccion.md](docs/01-introduccion.md): project introduction (Spanish and English).
+- [docs/02-fuentes-de-datos.md](docs/02-fuentes-de-datos.md): first data-availability report with download links and the fire-spread formulas.
+- [data/catalogo-de-fuentes.csv](data/catalogo-de-fuentes.csv): catalogue of data sources.
+- [data/esquema-base-de-datos.sql](data/esquema-base-de-datos.sql): PostgreSQL/PostGIS database schema.
+- [docs/03-licencias-y-cumplimiento.md](docs/03-licencias-y-cumplimiento.md): data licences and the compliance checklist. Restricted data goes in `data/restricted/`, which git ignores.
+- [docs/04-plan-de-construccion.md](docs/04-plan-de-construccion.md): website build plan based on the data verified so far.
+- [docs/05-datos-en-uso.md](docs/05-datos-en-uso.md): data used in version 1, with extraction links, and data left out for now.
+
+### Python scripts
+
+Scripts run in an isolated environment so they don't change your main Python install:
+
+```powershell
+python -m venv .venv
+.venv/Scripts/python -m pip install -r requirements.txt
+.venv/Scripts/python scripts/verificar_cuentas.py
+.venv/Scripts/python scripts/probar_acceso_datos.py
+```
+
+Keys go in `.env` (copy `.env.example`). After cloning, turn on the git safety check with `git config core.hooksPath .githooks`.

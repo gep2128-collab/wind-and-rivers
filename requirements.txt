@@ -1,0 +1,8 @@
+requests
+python-dotenv
+cdsapi
+ecmwf-datastores-client
+earthaccess
+xarray
+netCDF4
+pandas

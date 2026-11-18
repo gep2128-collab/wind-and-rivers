@@ -8,3 +8,6 @@ data/raw/
 .cdsapirc
 *.key
 secrets/
+
+# Entorno virtual de Python / Python virtual environment
+.venv/

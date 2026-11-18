@@ -1,6 +1,6 @@
 #!/bin/sh
 # Bloquea commits con datos restringidos o claves. / Blocks commits with restricted data or keys.
-# Ver docs/03-licencias-cumplimiento.md
+# Ver docs/03-licencias-y-cumplimiento.md
 fail=0
 staged=$(git diff --cached --name-only --diff-filter=ACMR)
 
@@ -23,6 +23,6 @@ if [ -f .env ] && [ -n "$staged" ]; then
 fi
 
 if [ $fail -ne 0 ]; then
-  echo "Commit cancelado. Revisa docs/03-licencias-cumplimiento.md"
+  echo "Commit cancelado. Revisa docs/03-licencias-y-cumplimiento.md"
   exit 1
 fi

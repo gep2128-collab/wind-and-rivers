@@ -1,7 +1,7 @@
 """Comprueba que cada cuenta de datos funciona, sin mostrar ninguna clave.
 Checks that every data account works, without printing any key.
 
-Uso / usage:  python scripts/verificar_cuentas.py
+Uso / usage:  .venv/Scripts/python scripts/verificar_cuentas.py
 Lee las claves de .env (en la raíz del proyecto). / Reads keys from .env.
 """
 from pathlib import Path
@@ -11,7 +11,7 @@ from dotenv import dotenv_values
 
 ROOT = Path(__file__).resolve().parent.parent
 env = {k: (v or "").strip() for k, v in dotenv_values(ROOT / ".env").items()}
-TIMEOUT = 30
+TIMEOUT = 60
 
 
 def missing(*names):

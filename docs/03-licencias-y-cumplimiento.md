@@ -23,7 +23,7 @@
 
 **Copias de respaldo:** guarda una copia de `data/restricted/` solo en un disco externo o en una carpeta personal privada. Nunca en carpetas compartidas, repositorios, servicios de conversión en línea ni herramientas de IA en la nube.
 
-**Verificar cuentas:** `python scripts/verificar_cuentas.py` prueba cada clave sin mostrarla.
+**Verificar cuentas:** `.venv/Scripts/python scripts/verificar_cuentas.py` prueba cada clave sin mostrarla.
 
 ## Estado por fuente / Status by source
 
