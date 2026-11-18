@@ -14,7 +14,10 @@ html,body{font-variant-numeric:tabular-nums;margin:0;height:100%;background:#000
 button{font:500 11px Arimo,Arial,sans-serif;color:var(--ink);background:transparent;border:1px solid var(--bd);border-radius:6px;padding:4px 9px;cursor:pointer}
 button:hover{background:rgba(255,255,255,.08)}
 button.on{background:var(--ink);color:#000;border-color:var(--ink)}
-#ctrl{left:16px;right:16px;bottom:16px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 16px;align-items:center}
+#ctrl{left:16px;right:16px;bottom:16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;align-items:center}
+/* layer buttons get their own full-width row; sliders and Play/legend share the next one */
+#layers{grid-column:1/-1}
+#ctrl>.row:not(#layers){flex-wrap:nowrap}
 .row{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
 .sl{display:grid;grid-template-columns:38px minmax(0,1fr) 40px;gap:8px;align-items:center;font-size:11px}
 .sl span:first-child{color:var(--mut)}
