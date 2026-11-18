@@ -1,11 +1,52 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Wind and rivers</title>
-<meta http-equiv="refresh" content="0; url=Wind%20and%20rivers%20%E2%80%94%20Amazon%20and%20Borneo.html">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wind and rivers — Amazon and Borneo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<p><a href="Wind%20and%20rivers%20%E2%80%94%20Amazon%20and%20Borneo.html">Open Wind and rivers — Amazon and Borneo</a></p>
+<div id="stage"><canvas id="cBase"></canvas><canvas id="cRad"></canvas><canvas id="cRiv"></canvas><canvas id="cPart"></canvas></div>
+
+<div id="head" class="pan">
+  <h1>Wind and rivers</h1>
+  <div class="sub">Amazon · Borneo · 2005–2024</div>
+  <div id="date">JAN 2024</div>
+</div>
+
+<div id="zoom" class="pan">
+  <button data-z="world" class="on">World</button>
+  <button data-z="amazon">Amazon</button>
+  <button data-z="borneo">Borneo</button>
+</div>
+
+<div id="ctrl" class="pan">
+  <div class="row" id="layers">
+    <button data-l="wind" class="on">Wind</button>
+    <button data-l="rivers" class="on">Rivers</button>
+    <button data-l="rad">Radiation</button>
+    <button data-l="cloud">Clouds</button>
+  </div>
+  <div>
+    <div class="sl"><span>Year</span><input id="yr" type="range" min="2005" max="2024" step="1" value="2024"><b id="yrO">2024</b></div>
+    <div class="sl"><span>Month</span><input id="mo" type="range" min="1" max="12" step="1" value="1"><b id="moO">Jan</b></div>
+  </div>
+  <div class="row">
+    <button id="play">▶ Play</button>
+    <label class="file">Load ERA5 (.json)<input id="file" type="file" accept=".json,application/json" multiple></label>
+    <div id="legend"></div>
+  </div>
+  <div id="note"></div>
+</div>
+<div id="probe"></div>
+
+<script src="data/land.js"></script>
+<script src="data/rivers.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

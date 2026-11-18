@@ -14,7 +14,7 @@ The site is served by GitHub Pages from the `main` branch. Every push to `main` 
    ```bash
    git clone https://github.com/gep2128-collab/wind-and-rivers.git
    ```
-2. Double-click `Wind and rivers — Amazon and Borneo.html` (or `index.html`) to open it in your browser.
+2. Double-click `index.html` to open it in your browser. It works straight from the folder, with no local server.
 
 You need an internet connection either way, because the page loads the D3 and TopoJSON libraries from cdnjs.
 
@@ -47,5 +47,19 @@ Loaded files stay in your browser only. They are not uploaded anywhere, and relo
 
 ## Files
 
-- `Wind and rivers — Amazon and Borneo.html`: the visualization (single self-contained page).
-- `index.html`: redirects to the visualization so the short Pages link works.
+- `index.html`: the visualization page (layout and controls).
+- `css/style.css`: the page's styles.
+- `js/app.js`: the map, animation and controls.
+- `data/land.js`: world land outline (TopoJSON).
+- `data/rivers.js`: main rivers of the Amazon and Borneo.
+- `Wind and rivers — Amazon and Borneo.html`: old address of the page; it now redirects to `index.html` so existing links keep working.
+
+The map data is in `.js` files instead of `.json` so the page also opens by double-click: browsers block `fetch()` of local files, but they allow `<script src>`.
+
+## Project: El Niño, Lima and fire (in progress)
+
+- [docs/01-introduccion-introduction.md](docs/01-introduccion-introduction.md): project introduction (Spanish and English).
+- [docs/02-reporte-datos-data-report.md](docs/02-reporte-datos-data-report.md): first data-availability report with download links and the fire-spread formulas.
+- [data/catalogo_fuentes.csv](data/catalogo_fuentes.csv): catalogue of data sources.
+- [data/schema.sql](data/schema.sql): PostgreSQL/PostGIS database schema.
+- [docs/03-licencias-cumplimiento.md](docs/03-licencias-cumplimiento.md): data licences and the compliance checklist. Restricted data goes in `data/restricted/`, which git ignores.
