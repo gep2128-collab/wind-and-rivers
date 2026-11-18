@@ -112,6 +112,7 @@ function drawGrid(c,d,k,col){
   c.imageSmoothingEnabled=true;c.drawImage(oc,a[0],a[1],b[0]-a[0],b[1]-a[1]);
 }
 // Study areas and the latitude band they share, drawn on the top canvas so they stay readable.
+const MAGENTA='#ff2fd8';
 function drawZones(){
   const c=X.lab;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W*dpr,H*dpr);c.setTransform(dpr,0,0,dpr,0,0);
   const bs=Object.values(ZONES).map(z=>z.b),bandS=Math.max(...bs.map(b=>b[1])),bandN=Math.min(...bs.map(b=>b[3]));
@@ -121,17 +122,18 @@ function drawZones(){
   c.setLineDash([]);
   const yN=scr(0,bandN)[1],yS=scr(0,bandS)[1],xl=Math.max(x0,0)+8;
   c.font='11px Arial,sans-serif';c.textBaseline='middle';
-  const lab=(t,x,y)=>{c.lineWidth=3;c.strokeStyle='rgba(0,0,0,.85)';c.strokeText(t,x,y);c.fillStyle='#fff';c.fillText(t,x,y);};
+  // plain (not bold) white text; a soft shadow keeps it readable without an outline
+  const lab=(t,x,y)=>{c.shadowColor='rgba(0,0,0,.9)';c.shadowBlur=3;c.fillStyle='#fff';c.fillText(t,x,y);c.shadowBlur=0;c.shadowColor='transparent';};
   lab(`${bandN}°N`,xl,yN-8);lab(`${Math.abs(bandS)}°S`,xl,yS+8);
   // band name only where it does not run into a study-area label
   const t='Shared latitude band',tx=xl+36,ax=Math.min(...Object.values(ZONES).map(z=>scr(z.b[0],z.b[3])[0]).filter(x=>x>tx));
   if(!(tx+c.measureText(t).width+8>ax))lab(t,tx,yN-8);
   for(const z in ZONES){
     const [w,s,e,n]=ZONES[z].b,a=scr(w,n),b=scr(e,s);
-    c.strokeStyle='#ff8a4c';c.lineWidth=2.6;c.lineCap='round';c.setLineDash([0,6]);
+    c.strokeStyle=MAGENTA;c.lineWidth=1.1;c.lineCap='round';c.setLineDash([0,3.5]);
     c.beginPath();c.roundRect(a[0],a[1],b[0]-a[0],b[1]-a[1],4);c.stroke();c.setLineDash([]);
-    c.font='bold 12px Arial,sans-serif';c.textBaseline='alphabetic';c.lineWidth=4;c.strokeStyle='rgba(0,0,0,.85)';
-    const t=ZONES[z].name.toUpperCase();c.strokeText(t,a[0],a[1]-7);c.fillStyle='#ff8a4c';c.fillText(t,a[0],a[1]-7);
+    c.font='bold 12px Arial,sans-serif';c.textBaseline='alphabetic';
+    c.fillStyle=MAGENTA;c.fillText(ZONES[z].name.toUpperCase(),a[0],a[1]-7);
   }
   c.lineCap='butt';
 }
@@ -211,8 +213,14 @@ function frame(now){
   const r=X.riv;r.setTransform(1,0,0,1,0,0);r.clearRect(0,0,W*dpr,H*dpr);
   if(layers.rivers){
     setT(r);r.lineCap='round';const s=Math.min(2.2,Math.sqrt(T.k)/1.4+.3);
-    for(const g of riverGroups){r.setLineDash([]);r.strokeStyle='#1f5fb8';r.lineWidth=g.w*s/T.k;r.stroke(g.p);}
-    for(const g of riverGroups){r.setLineDash([3/T.k,11/T.k]);r.lineDashOffset=-(now/1000*22)/T.k;r.strokeStyle='#9fe0ff';r.lineWidth=g.w*s*.8/T.k;r.stroke(g.p);}
+    // Rivers: deep-teal banks, light-cyan water, and two currents moving downstream at
+    // different speeds (deep blue ripples + white glints) so the flow reads like water.
+    const t=now/1000;
+    for(const g of riverGroups){r.setLineDash([]);r.strokeStyle='#0b5d73';r.lineWidth=(g.w*s+1.1)/T.k;r.stroke(g.p);}
+    for(const g of riverGroups){r.strokeStyle='#8eefff';r.lineWidth=g.w*s/T.k;r.stroke(g.p);}
+    riverGroups.forEach((g,i)=>{const v=(26-i*4)/T.k;
+      r.setLineDash([6/T.k,4/T.k,2/T.k,9/T.k]);r.lineDashOffset=-t*v;r.strokeStyle='rgba(23,92,190,.75)';r.lineWidth=g.w*s*.55/T.k;r.stroke(g.p);
+      r.setLineDash([1.5/T.k,15/T.k]);r.lineDashOffset=-t*v*1.6;r.strokeStyle='rgba(255,255,255,.95)';r.lineWidth=g.w*s*.45/T.k;r.stroke(g.p);});
     r.setLineDash([]);
   }
   requestAnimationFrame(frame);
