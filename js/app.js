@@ -46,10 +46,10 @@ function drawBase(){
   for(const z in ZONES){
     const [w,s,e,n]=ZONES[z].b,a=scr(w,n),b=scr(e,s);
     c.strokeStyle='#eb6834';c.lineWidth=1.5;c.setLineDash([6,4]);c.strokeRect(a[0],a[1],b[0]-a[0],b[1]-a[1]);c.setLineDash([]);
-    c.font='500 13px "IBM Plex Mono",monospace';c.fillStyle='#eb6834';c.fillText(ZONES[z].name.toUpperCase(),a[0],a[1]-7);
+    c.font='bold 12px Arial,sans-serif';c.fillStyle='#eb6834';c.fillText(ZONES[z].name.toUpperCase(),a[0],a[1]-7);
   }
   if(layers.rivers&&T.k>2.5){
-    c.font='italic 11px "IBM Plex Sans",sans-serif';c.fillStyle='#1d4f8f';
+    c.font='italic 11px Arial,sans-serif';c.fillStyle='#1d4f8f';
     for(const l of riverLabels){if(T.k<5&&l.r>5)continue;const x=T.x+T.k*l.p[0],y=T.y+T.k*l.p[1];if(x>0&&x<W&&y>0&&y<H)c.fillText(l.n,x+4,y-4);}
   }
 }
@@ -174,7 +174,7 @@ function frame(now){
   const c=X.part;c.setTransform(1,0,0,1,0,0);
   c.globalCompositeOperation='destination-in';c.fillStyle='rgba(0,0,0,.92)';c.fillRect(0,0,W*dpr,H*dpr);c.globalCompositeOperation='source-over';
   if(layers.wind){
-    c.setTransform(dpr,0,0,dpr,0,0);c.lineWidth=1.25;c.lineCap='round';
+    c.setTransform(dpr,0,0,dpr,0,0);c.lineWidth=.8;c.lineCap='round';
     const degPx=proj.scale()*RAD*T.k,K=.22/degPx,b=COLS.map(()=>new Path2D()),v=view();
     for(const p of P){
       if(p.dead){if(Math.random()<.02)spawn(p,v);continue;}

@@ -1,5 +1,5 @@
-# El Niño y el fuego en la Amazonía y Borneo
-# El Niño and fire in the Amazon and Borneo
+# El Niño-Driven Wildfires: A Comparative Data Study of the Amazon and Borneo Rainforests
+## Incendios impulsados por El Niño: un estudio comparativo de datos de la Amazonía y Borneo
 
 *Borrador v0.3 — 18 nov 2026 · Draft v0.3 — 18 Nov 2026*
 

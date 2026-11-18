@@ -76,7 +76,7 @@ function drawEnso(){
     c.fillStyle=p===1?'#e34948':p===-1?'#3987e5':'rgba(255,255,255,.35)';
     c.fillRect(x,v>0?mid-v*sc:mid,Math.max(1,bw-.3),Math.abs(v)*sc);
   });
-  c.font='10px "IBM Plex Mono",monospace';c.fillStyle='#9c9a92';c.textAlign='center';
+  c.font='10px Arial,sans-serif';c.fillStyle='#9c9a92';c.textAlign='center';
   for(let y=y0;y<=y0+n/12;y++){if((y-y0)%3)continue;const x=(y-y0)*12*bw;c.fillRect(x,h-14,1,4);c.fillText(y,x,h-2);}
   const k=monthKey(),i=ensoIdx[k]!=null?ensoIdx[k]:(+k.slice(0,4)-y0)*12+(+k.slice(5)-1);
   c.fillStyle='#ecebe6';c.fillRect(i*bw+bw/2-1,0,2,h-16);

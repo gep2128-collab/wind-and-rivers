@@ -1,4 +1,6 @@
-# Wind and rivers — Amazon and Borneo
+# El Niño-Driven Wildfires: A Comparative Data Study of the Amazon and Borneo Rainforests
+
+*Incendios impulsados por El Niño: un estudio comparativo de datos de la Amazonía y Borneo*
 
 An interactive map of wind, rivers, solar radiation and clouds over the Amazon and Borneo, month by month from 2005 to 2024.
 
