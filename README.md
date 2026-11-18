@@ -56,7 +56,7 @@ Loaded files stay in your browser only. They are not uploaded anywhere, and relo
 
 The map data is in `.js` files instead of `.json` so the page also opens by double-click: browsers block `fetch()` of local files, but they allow `<script src>`.
 
-## Project: El Niño, Lima and fire (in progress)
+## Project: El Niño and fire in the Amazon and Borneo (in progress)
 
 - [docs/01-introduccion.md](docs/01-introduccion.md): project introduction (Spanish and English).
 - [docs/02-fuentes-de-datos.md](docs/02-fuentes-de-datos.md): first data-availability report with download links and the fire-spread formulas.

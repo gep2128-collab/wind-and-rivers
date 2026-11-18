@@ -1,5 +1,5 @@
--- Base de datos del proyecto El Niño · Lima · Fuego
--- Project database: El Niño · Lima · Fire
+-- Base de datos del proyecto El Niño y el fuego en la Amazonía y Borneo
+-- Project database: El Niño and fire in the Amazon and Borneo
 --
 -- Motor / engine: PostgreSQL 15+ con / with PostGIS 3+
 --
@@ -30,7 +30,7 @@ CREATE TABLE data_source (
 
 -- 2. Regiones de estudio / study regions ------------------------------------------------
 CREATE TABLE region (
-    region_id  TEXT PRIMARY KEY,                -- 'lima', 'nino12', 'nino34', 'amazon', 'borneo'
+    region_id  TEXT PRIMARY KEY,                -- 'nino12', 'nino34', 'amazon', 'borneo', 'madre_de_dios', 'kalimantan_central'
     name_es    TEXT NOT NULL,
     name_en    TEXT NOT NULL,
     geom       geometry(MultiPolygon, 4326) NOT NULL
@@ -81,7 +81,7 @@ CREATE TABLE station_obs_daily (
     PRIMARY KEY (station_id, obs_date)
 );
 
--- 6. Eventos de impacto en Lima / impact events ----------------------------------------
+-- 6. Eventos de impacto (sequías, incendios mayores) / impact events ----------------------------------------
 CREATE TABLE impact_event (
     event_id     BIGSERIAL PRIMARY KEY,
     event_date   DATE NOT NULL,

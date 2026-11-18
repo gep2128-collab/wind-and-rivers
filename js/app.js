@@ -69,8 +69,41 @@ function drawRad(){
     if(ds.length){c.globalAlpha=.6;for(const d of ds)drawGrid(c,d,'ssrd',v=>d3.interpolateInferno(Math.min(1,v/320)));}
     else{c.globalAlpha=.5;const m=monthF(),a=proj([-180,90]),b=proj([180,-90]),g=c.createLinearGradient(0,a[1],0,b[1]);for(let lat=90;lat>=-90;lat-=2)g.addColorStop((90-lat)/180,d3.interpolateInferno(Math.max(0,insol(lat,m))/560));c.fillStyle=g;c.fillRect(a[0],a[1],b[0]-a[0],b[1]-a[1]);}
   }
-  if(layers.cloud){c.globalAlpha=1;for(const d of DATA.filter(d=>d.tcc))drawGrid(c,d,'tcc',v=>`rgba(150,180,225,${(Math.max(0,Math.min(1,v))*.8).toFixed(2)})`);}
+  if(layers.cloud){
+    c.globalAlpha=1;const ds=DATA.filter(d=>d.tcc);
+    if(ds.length)for(const d of ds)drawGrid(c,d,'tcc',v=>`rgba(150,180,225,${(Math.max(0,Math.min(1,v))*.8).toFixed(2)})`);
+    else{const a=proj([-180,90]),b=proj([180,-90]);c.imageSmoothingEnabled=true;c.drawImage(demoCloudImage(),a[0],a[1],b[0]-a[0],b[1]-a[1]);}
+  }
   c.globalAlpha=1;
+}
+// Demo cloud cover (0-1), a rough climatology: ITCZ band that follows the season,
+// mid-latitude storm tracks, monsoons, Amazon and Borneo convection, and stratocumulus decks.
+function demoCloud(lon,lat,m,yr){
+  const itcz=2.5+7*Math.sin(2*Math.PI*(m-4.5)/12),enso=Math.sin(yr*2.13+.7);
+  const g=(x0,y0,sx,sy)=>Math.exp(-(((lon-x0)/sx)**2)-(((lat-y0)/sy)**2));
+  const winterN=.5+.5*Math.cos(2*Math.PI*(m-1)/12),wetAm=.5+.5*Math.cos(2*Math.PI*(m-2)/12),wetBo=.5+.5*Math.cos(2*Math.PI*(m-12)/12),jja=.5-.5*Math.cos(2*Math.PI*(m-1)/12);
+  let v=.12;
+  v+=.55*Math.exp(-(((lat-itcz)/7)**2));
+  v+=(.45+.15*(lat>0?winterN:1-winterN))*Math.exp(-(((Math.abs(lat)-55)/12)**2));
+  v+=(.35+.35*wetAm)*g(-62,-6,14,11);
+  v+=(.5+.25*wetBo-.15*enso)*g(114,1,14,9);
+  v+=.5*jja*g(82,20,18,9);
+  v+=.45*(g(-82,-18,9,8)+g(5,-18,9,7)+g(-125,27,10,7));
+  v-=.25*(Math.exp(-(((lat-24)/7)**2))+Math.exp(-(((lat+26)/7)**2)))*(1-g(114,1,25,15));
+  v+=.18*Math.sin(lon*RAD*7+yr*1.7+m*.9)*Math.cos(lat*RAD*9-yr*.8)+.1*Math.sin(lon*RAD*17-m*1.3)*Math.sin(lat*RAD*13+yr);
+  return Math.max(0,Math.min(1,v));
+}
+let cloudCache={key:null,cv:null};
+function demoCloudImage(){
+  const m=monthF(),yr=Math.floor(tm/12),key=yr+'-'+m;
+  if(cloudCache.key===key)return cloudCache.cv;
+  const nx=360,ny=180,cv=cloudCache.cv||document.createElement('canvas');cv.width=nx;cv.height=ny;
+  const o=cv.getContext('2d'),img=o.createImageData(nx,ny);
+  for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){
+    const v=demoCloud(-179.5+i,89.5-j,m,yr),n=(j*nx+i)*4;
+    img.data[n]=150;img.data[n+1]=180;img.data[n+2]=225;img.data[n+3]=Math.round(v*v*.8*255);
+  }
+  o.putImageData(img,0,0);cloudCache={key,cv};return cv;
 }
 function frameOf(d){const f=Math.floor(tm);const key=(Y0+Math.floor(f/12))+'-'+String(f%12+1).padStart(2,'0');return d.idx[key];}
 function drawGrid(c,d,k,col){
@@ -193,11 +226,12 @@ function updNote(){
   let s=real?`<b>Data loaded:</b> ${DATA.map(d=>d.name).join(', ')}. `:'<b>Demo mode.</b> The wind is a synthetic field (trade winds, an ITCZ that shifts by month, the Asian monsoon, the South American low-level jet), not measurements. Load a JSON converted from ERA5 to see real data. ';
   s+='Rivers: Natural Earth 10m, flow animated toward the river mouth. ';
   if(layers.rad)s+=DATA.some(d=>d.ssrd)?'Radiation: ERA5 surface solar radiation (W/m²). ':'Radiation: top-of-atmosphere insolation calculated from orbital geometry (W/m²); surface radiation requires ERA5 or CERES. ';
-  if(layers.cloud&&!DATA.some(d=>d.tcc))s+='<b>Clouds:</b> needs data — load a JSON that includes tcc. ';
+  if(layers.cloud)s+=DATA.some(d=>d.tcc)?'Clouds: ERA5 total cloud cover. ':'Clouds: synthetic cloud cover (demo), not measurements; load a JSON that includes tcc for real clouds. ';
   s+='Drag to pan, scroll to zoom.';
   note.innerHTML=s;
   legend.innerHTML=(layers.wind?'<div>Wind m/s</div><div class="bar"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0</span><span>6</span><span>12+</span></div>':'')
-    +(layers.rad?'<div style="margin-top:4px">Radiation W/m²</div><div class="bar rb"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0</span><span>'+(DATA.some(d=>d.ssrd)?'320':'560')+'</span></div>':'');
+    +(layers.rad?'<div style="margin-top:4px">Radiation W/m²</div><div class="bar rb"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0</span><span>'+(DATA.some(d=>d.ssrd)?'320':'560')+'</span></div>':'')
+    +(layers.cloud?'<div style="margin-top:4px">Cloud cover</div><div style="height:8px;width:160px;border-radius:2px;background:linear-gradient(90deg,rgba(150,180,225,0),rgba(150,180,225,.8))"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0%</span><span>100%</span></div>':'');
 }
 file.onchange=async e=>{
   for(const f of e.target.files){

@@ -1,7 +1,7 @@
-# El Niño, Lima y el fuego en los bosques tropicales
-# El Niño, Lima and fire in tropical forests
+# El Niño y el fuego en la Amazonía y Borneo
+# El Niño and fire in the Amazon and Borneo
 
-*Borrador v0.2 — 18 nov 2026 · Draft v0.2 — 18 Nov 2026*
+*Borrador v0.3 — 18 nov 2026 · Draft v0.3 — 18 Nov 2026*
 
 ---
 
@@ -11,9 +11,9 @@
 
 El Fenómeno El Niño–Oscilación del Sur (ENOS) es la mayor fuente de variabilidad climática del planeta de un año a otro. Cuando el Pacífico ecuatorial se calienta, cambian los vientos alisios, se desplazan las zonas de lluvia y se alteran la nubosidad y la temperatura del aire a miles de kilómetros de distancia.
 
-Lima es un caso especial. Es una de las capitales más secas del mundo (unos pocos milímetros de lluvia al año), pero está frente a la región **Niño 1+2**, donde se forma el llamado **El Niño Costero**. En los últimos 20 años, eventos como El Niño 2015–16, El Niño Costero 2017 y el ciclón Yaku con El Niño Costero 2023–24 trajeron a Lima y su costa mar más caliente, lluvias intensas, huaicos e inundaciones.
+La primera señal aparece en el mar: frente a la costa del Perú y de Sudamérica (región **Niño 1+2**) el agua se calienta varios grados, con lluvias e inundaciones en toda esa costa. Pero este proyecto no se centra en la costa, sino en los efectos a distancia que El Niño produce en dos de los bosques tropicales más grandes del planeta.
 
-El mismo calentamiento del Pacífico tiene un efecto opuesto en otros lugares: **sequía en la Amazonía y en Borneo**. Bosques húmedos que normalmente no arden se secan y el fuego, casi siempre iniciado por personas para limpiar terreno, se escapa y se propaga. Los incendios de Borneo en 2015 y los de la Amazonía en 2015–16 y 2023–24 coinciden con eventos El Niño fuertes. Y en 2026 hay otro en curso: en octubre de 2026 el mar frente a Perú (región Niño 1+2) estuvo 5.25 °C por encima de lo normal (NOAA).
+Ese calentamiento del Pacífico trae **sequía a la Amazonía y a Borneo**. Bosques húmedos que normalmente no arden se secan y el fuego, casi siempre iniciado por personas para limpiar terreno, se escapa y se propaga. Los incendios de Borneo en 2015 y los de la Amazonía en 2015–16 y 2023–24 coinciden con eventos El Niño fuertes. Y en 2026 hay otro en curso: en octubre de 2026 el mar frente a Perú (región Niño 1+2) estuvo 5.25 °C por encima de lo normal (NOAA).
 
 Este proyecto es una **página web interactiva** que conecta esas piezas:
 
@@ -29,7 +29,7 @@ Este proyecto es una **página web interactiva** que conecta esas piezas:
 
 1. ¿Cuánto CO₂ libera un incendio comparado con lo que ese bosque captura en un año?
 2. ¿Qué uso económico tiene hoy la tierra que se quemó?
-3. ¿Cuánto cambia el clima de Lima (temperatura del mar, del aire, nubes y lluvia) durante un evento El Niño frente a un año normal?
+3. ¿Cuánto cambia el clima de la Amazonía y de Borneo (temperatura del aire, lluvia, nubosidad y humedad) durante un evento El Niño frente a un año normal?
 4. ¿Cuál es el impacto de El Niño en la expansión del fuego, comparado con una época sin El Niño, y cuáles podrían ser sus causas climáticas?
 
 ### Alcance
@@ -38,7 +38,7 @@ Este proyecto es una **página web interactiva** que conecta esas piezas:
 - **Zonas piloto del simulador:** Madre de Dios (Amazonía peruana) y Kalimantan Central (Borneo).
 - **Idioma:** la web tendrá un botón ES/EN.
 - **Escenarios:** 2026–2045.
-- **Regiones:** Lima y la costa central del Perú; Pacífico ecuatorial (Niño 1+2 y Niño 3.4); cuenca amazónica; isla de Borneo.
+- **Regiones de estudio:** cuenca amazónica e isla de Borneo. El Pacífico ecuatorial (Niño 1+2 y Niño 3.4) aparece solo como origen de la señal de El Niño.
 
 ### Lo que este proyecto no es
 
@@ -52,9 +52,9 @@ No es un sistema de alerta ni un modelo operativo de incendios. La simulación d
 
 The El Niño–Southern Oscillation (ENSO) is the planet's largest source of year-to-year climate variability. When the equatorial Pacific warms, the trade winds change, rain belts shift, and cloud cover and air temperature change thousands of kilometres away.
 
-Lima is a special case. It is one of the driest capitals in the world (a few millimetres of rain a year), but it faces the **Niño 1+2** region, where the so-called **Coastal El Niño** forms. Over the last 20 years, events such as El Niño 2015–16, the 2017 Coastal El Niño, and cyclone Yaku with the 2023–24 Coastal El Niño brought warmer sea, heavy rain, mudslides (*huaicos*) and floods to Lima and its coast.
+The first sign appears at sea: off the coast of Peru and South America (the **Niño 1+2** region) the water warms by several degrees, bringing rain and floods along that whole coast. This project does not focus on the coast, though, but on the remote effects El Niño has on two of the largest tropical forests on Earth.
 
-The same Pacific warming has the opposite effect elsewhere: **drought in the Amazon and in Borneo**. Humid forests that normally do not burn dry out, and fire, almost always lit by people to clear land, escapes and spreads. The 2015 Borneo fires and the 2015–16 and 2023–24 Amazon fires coincide with strong El Niño events. Another one is under way in 2026: in October 2026 the sea off Peru (Niño 1+2 region) was 5.25 °C above normal (NOAA).
+That Pacific warming brings **drought to the Amazon and Borneo**. Humid forests that normally do not burn dry out, and fire, almost always lit by people to clear land, escapes and spreads. The 2015 Borneo fires and the 2015–16 and 2023–24 Amazon fires coincide with strong El Niño events. Another one is under way in 2026: in October 2026 the sea off Peru (Niño 1+2 region) was 5.25 °C above normal (NOAA).
 
 This project is an **interactive web page** that connects those pieces:
 
@@ -70,7 +70,7 @@ This project is an **interactive web page** that connects those pieces:
 
 1. How much CO₂ does a fire release compared with what that forest absorbs in a year?
 2. What is the land that burned used for today?
-3. How much does Lima's climate (sea and air temperature, clouds, rain) change during an El Niño event compared with a normal year?
+3. How much does the climate of the Amazon and Borneo (air temperature, rain, cloud cover and humidity) change during an El Niño event compared with a normal year?
 4. What is El Niño's impact on how fire spreads, compared with a period without El Niño, and what could its climate causes be?
 
 ### Scope
@@ -79,7 +79,7 @@ This project is an **interactive web page** that connects those pieces:
 - **Fire simulator pilot areas:** Madre de Dios (Peruvian Amazon) and Central Kalimantan (Borneo).
 - **Language:** the site will have an ES/EN button.
 - **Scenarios:** 2026–2045.
-- **Regions:** Lima and Peru's central coast; equatorial Pacific (Niño 1+2 and Niño 3.4); Amazon basin; Borneo.
+- **Study regions:** the Amazon basin and Borneo. The equatorial Pacific (Niño 1+2 and Niño 3.4) appears only as the source of the El Niño signal.
 
 ### What this project is not
 

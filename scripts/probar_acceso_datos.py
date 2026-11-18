@@ -76,20 +76,20 @@ def era5():
     from ecmwf.datastores import Client
 
     c = Client(url="https://cds.climate.copernicus.eu/api", key=key)
-    target = OUT / "era5_lima_202303.zip"
+    target = OUT / "era5_madre_de_dios_202309.zip"
     c.retrieve(
         "reanalysis-era5-single-levels-monthly-means",
         {
             "product_type": ["monthly_averaged_reanalysis"],
             "variable": ["2m_temperature", "sea_surface_temperature", "total_precipitation",
                          "total_cloud_cover", "10m_u_component_of_wind", "10m_v_component_of_wind"],
-            "year": ["2023"], "month": ["03"], "time": ["00:00"],
-            "area": [-11, -78, -13, -76],  # norte, oeste, sur, este: Lima
+            "year": ["2023"], "month": ["09"], "time": ["00:00"],
+            "area": [-10, -72, -13, -68],  # norte, oeste, sur, este: Madre de Dios
             "data_format": "netcdf",
         },
         target=str(target),
     )
-    return f"archivo {target.name} ({target.stat().st_size // 1024} KB) con t2m, sst, tp, tcc, u10, v10 de marzo 2023 (ciclón Yaku)"
+    return f"archivo {target.name} ({target.stat().st_size // 1024} KB) con t2m, sst, tp, tcc, u10, v10 de septiembre 2023 (sequía de El Niño)"
 
 
 def mcd64a1():
@@ -160,7 +160,7 @@ TESTS = [
     ("GFED5 emisiones (Zenodo)", gfed5),
     ("Flora (GBIF)", gbif_flora),
     ("Categoría IUCN (API)", iucn_category),
-    ("ERA5 clima Lima (Copernicus)", era5),
+    ("ERA5 clima Madre de Dios (Copernicus)", era5),
 ]
 
 if __name__ == "__main__":

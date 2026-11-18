@@ -1,5 +1,7 @@
 # Reporte 1: disponibilidad de datos · Report 1: data availability
 
+> **Actualización 18 nov 2026:** Lima y la costa del Perú quedaron fuera del alcance; el proyecto se centra en la Amazonía y Borneo. Las secciones sobre Lima se conservan como referencia. La lista vigente está en el [Reporte 2](05-datos-en-uso.md). · *Update: Lima and the Peruvian coast are out of scope; see [Report 2](05-datos-en-uso.md).*
+
 *18 nov 2026 · Primera búsqueda / first search.* Los enlaces se verificaron con búsquedas web el 18 nov 2026; los marcados ⚠️ no se pudieron confirmar directamente y hay que abrirlos antes de automatizar descargas. *Links were checked with web searches on 18 Nov 2026; those marked ⚠️ could not be confirmed directly and should be opened before scripting downloads.*
 
 Además se probó cada enlace del catálogo de forma automática: 40 de 48 respondieron bien. ENFEN, GEOBOSQUES, IUCN e IPCC Atlas bloquean robots (error 403) pero abren en el navegador; ANA, LandMark, la API de GFW e IGP no respondieron desde aquí. *Every catalogue link was also tested automatically: 40 of 48 responded. ENFEN, GEOBOSQUES, IUCN and the IPCC Atlas block bots (403) but open in a browser; ANA, LandMark, the GFW Data API and IGP did not respond from here.*

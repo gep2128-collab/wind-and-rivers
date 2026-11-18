@@ -26,11 +26,11 @@
 | Niño 1+2 mensual (ERSST v5, clima 1991–2020) | NOAA CPC | Calcular el **ICEN** (El Niño Costero) nosotros mismos: media móvil de 3 meses de la anomalía Niño 1+2, como hace ENFEN | [ersst5.nino.mth.91-20.ascii](https://www.cpc.ncep.noaa.gov/data/indices/ersst5.nino.mth.91-20.ascii) | 🔗 |
 | Temperatura del mar en grilla | NOAA OISST v2.1 vía ERDDAP | Mapa de colores mes a mes | [ERDDAP OISST](https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg_LonPM180.html) | ✅ |
 
-#### 2. Aire y Lima
+#### 2. Aire y clima regional
 
 | Dato | Fuente | Para qué | Enlace de extracción | Estado |
 |---|---|---|---|---|
-| Viento (u, v), temperatura 2 m, TSM, nubosidad, lluvia, radiación | ERA5 mensual, Copernicus CDS | Capas del mapa y series de Lima | [ERA5 mensual](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels-monthly-means) | ✅ |
+| Viento (u, v), temperatura 2 m, TSM, nubosidad, lluvia, radiación | ERA5 mensual, Copernicus CDS | Capas del mapa y series de clima de la Amazonía y Borneo | [ERA5 mensual](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels-monthly-means) | ✅ |
 
 #### 3. Fuego
 
@@ -74,7 +74,7 @@
 | Escenarios 2026–2045 (CMIP6) | Se deja para la v2 (cuenta y licencia ya listas) | Fase 6 del plan |
 | GFED5.1 diario (18.4 GB) | No hace falta: basta el mensual | — |
 | ICEN oficial (IGP) | El enlace del IGP no respondió | Se calcula con ERSST (arriba); se compara con los comunicados de [ENFEN](https://enfen.imarpe.gob.pe/) ⚠️ |
-| Estaciones SENAMHI, PISCO, DesInventar | No son necesarias para la v1; ERA5 cubre Lima | Si se quiere validar ERA5 con estaciones |
+| Impactos en Lima y la costa (SENAMHI, PISCO, DesInventar, ANA) | Fuera del alcance: el proyecto se centra en la Amazonía y Borneo | — |
 | BIEN (plantas), WDPA (áreas protegidas) | Superposición con GBIF y RAISG | Si GBIF no alcanza |
 
 ---
@@ -90,7 +90,7 @@ Period 2005–2026, including the current El Niño. Simulator pilot areas: Madre
 The source links are in the Spanish tables above.
 
 - **El Niño and ocean:** NOAA ONI, OISST-based Niño 1+2 and 3.4 indices, ERSST v5 Niño 1+2 (to compute the Coastal El Niño Index, ICEN, ourselves as a 3-month running mean, as ENFEN does), and OISST gridded SST via ERDDAP for the colour map. ✅
-- **Air and Lima:** ERA5 monthly means (wind, 2 m temperature, SST, cloud cover, precipitation, radiation). ✅
+- **Air and regional climate:** ERA5 monthly means (wind, 2 m temperature, SST, cloud cover, precipitation, radiation). ✅
 - **Fire:** NASA FIRMS hotspots, MODIS MCD64A1 burned area, GFED5.1 monthly emissions (1.74 GB, temporary), CAMS GFAS for recent months if needed, and the CEMS Fire Weather Index to compare seasons with and without El Niño. ✅ / account and licence ready
 - **Simulator:** MapBiomas Peru and Amazonia (Madre de Dios), ESA WorldCover (Central Kalimantan), Copernicus DEM for slope, ERA5 and FWI for wind and moisture.
 - **Impact:** MODIS NPP (gross O₂ and yearly CO₂ uptake), GBIF plant records (CC0 and CC BY only), IUCN category for flagship species, RAISG and LandMark lands, WorldPop population.
@@ -104,4 +104,5 @@ The source links are in the Spanish tables above.
 - **CMIP6 2026–2045 scenarios:** moved to v2; account and licence are ready.
 - **GFED5.1 daily (18.4 GB):** not needed; the monthly file is enough.
 - **Official ICEN (IGP):** link did not respond; computed from ERSST instead and checked against ENFEN statements.
-- **SENAMHI stations, PISCO, DesInventar, BIEN, WDPA:** not needed for v1.
+- **Lima and coastal impacts (SENAMHI, PISCO, DesInventar, ANA):** out of scope; the project focuses on the Amazon and Borneo.
+- **BIEN, WDPA:** not needed for v1.
