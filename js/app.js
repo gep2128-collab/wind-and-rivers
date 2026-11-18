@@ -46,7 +46,7 @@ function drawBase(){
   setT(c);c.fillStyle='#fff';c.fill(landPath);
   c.setTransform(dpr,0,0,dpr,0,0);
   if(layers.rivers&&T.k>2.5){
-    c.font='italic 11px Arial,sans-serif';c.fillStyle='#1d4f8f';
+    c.font='italic 11px Arimo,Arial,sans-serif';c.fillStyle='#1d4f8f';
     for(const l of riverLabels){if(T.k<5&&l.r>5)continue;const x=T.x+T.k*l.p[0],y=T.y+T.k*l.p[1];if(x>0&&x<W&&y>0&&y<H)c.fillText(l.n,x+4,y-4);}
   }
 }
@@ -131,7 +131,7 @@ function drawZones(){
   for(const lat of[bandN,bandS]){const y=scr(0,lat)[1];c.beginPath();c.moveTo(x0,y);c.lineTo(x1,y);c.stroke();}
   c.setLineDash([]);
   const yN=scr(0,bandN)[1],yS=scr(0,bandS)[1],xl=Math.max(x0,0)+8;
-  c.font='11px Arial,sans-serif';c.textBaseline='middle';
+  c.font='11px Arimo,Arial,sans-serif';c.textBaseline='middle';
   // plain (not bold) white text; a soft shadow keeps it readable without an outline
   const lab=(t,x,y)=>{c.shadowColor='rgba(0,0,0,.9)';c.shadowBlur=3;c.fillStyle='#fff';c.fillText(t,x,y);c.shadowBlur=0;c.shadowColor='transparent';};
   lab(`${bandN}°N`,xl,yN-8);lab(`${Math.abs(bandS)}°S`,xl,yS+8);
@@ -142,7 +142,7 @@ function drawZones(){
     const [w,s,e,n]=ZONES[z].b,a=scr(w,n),b=scr(e,s);
     c.strokeStyle=ZONE_COLOR;c.lineWidth=1.1;c.lineCap='round';c.setLineDash([0,3.5]);
     c.beginPath();c.roundRect(a[0],a[1],b[0]-a[0],b[1]-a[1],4);c.stroke();c.setLineDash([]);
-    c.font='13px Arial,sans-serif';c.textBaseline='alphabetic';
+    c.font='13px Arimo,Arial,sans-serif';c.textBaseline='alphabetic';
     // soft shadow (not an outline) so the orange stands out on red sea and white land
     const nm=ZONES[z].name.toUpperCase();c.shadowColor='rgba(0,0,0,.95)';c.shadowBlur=7;c.fillStyle=ZONE_COLOR;
     for(let k=0;k<3;k++)c.fillText(nm,a[0],a[1]-7); // stacked soft shadows form a dark glow behind the text
@@ -336,4 +336,6 @@ function applyHash(){
   if(z&&(z==='world'||ZONES[z]))flyTo(z);
 }
 addEventListener('hashchange',applyHash);
+// Map labels are drawn on canvas: redraw them once the Arimo web font has loaded
+if(document.fonts)document.fonts.ready.then(()=>{redrawStatic();if(window.drawEnso)drawEnso();});
 resize();seed();syncUI();ensoSync();updNote();applyHash();requestAnimationFrame(frame);
