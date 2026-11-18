@@ -27,7 +27,7 @@ You need an internet connection either way, because the page loads the D3 and To
 
 ## Demo mode vs. real data
 
-When the page first opens it runs in **demo mode**: the wind is a synthetic field (trade winds, a seasonal ITCZ, the Asian monsoon and the South American low-level jet), not measurements. Radiation is the top-of-atmosphere value calculated from the Sun's position, and the Clouds layer stays empty.
+When the page first opens it runs in **demo mode**: the wind is a synthetic field (trade winds, a seasonal ITCZ, the Asian monsoon and the South American low-level jet), not measurements. Radiation is the top-of-atmosphere value calculated from the Sun's position, and the Clouds layer shows a synthetic cloud cover (the equatorial cloud band that moves with the seasons, mid-latitude storm tracks, the monsoons, Amazon and Borneo convection, and the low cloud decks off Peru, Namibia and California). Loading a JSON with `tcc` replaces it with real ERA5 cloud cover.
 
 To show real data, click **Load ERA5 (.json)** and pick one or more JSON files converted from [ERA5](https://cds.climate.copernicus.eu/) monthly data. Each file needs:
 

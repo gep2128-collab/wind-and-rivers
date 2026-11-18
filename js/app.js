@@ -71,7 +71,7 @@ function drawRad(){
   }
   if(layers.cloud){
     c.globalAlpha=1;const ds=DATA.filter(d=>d.tcc);
-    if(ds.length)for(const d of ds)drawGrid(c,d,'tcc',v=>`rgba(150,180,225,${(Math.max(0,Math.min(1,v))*.8).toFixed(2)})`);
+    if(ds.length)for(const d of ds)drawGrid(c,d,'tcc',v=>`rgba(95,130,190,${(Math.max(0,Math.min(1,v))*.8).toFixed(2)})`);
     else{const a=proj([-180,90]),b=proj([180,-90]);c.imageSmoothingEnabled=true;c.drawImage(demoCloudImage(),a[0],a[1],b[0]-a[0],b[1]-a[1]);}
   }
   c.globalAlpha=1;
@@ -101,7 +101,7 @@ function demoCloudImage(){
   const o=cv.getContext('2d'),img=o.createImageData(nx,ny);
   for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){
     const v=demoCloud(-179.5+i,89.5-j,m,yr),n=(j*nx+i)*4;
-    img.data[n]=150;img.data[n+1]=180;img.data[n+2]=225;img.data[n+3]=Math.round(v*v*.8*255);
+    img.data[n]=95;img.data[n+1]=130;img.data[n+2]=190;img.data[n+3]=Math.round(v*v*.8*255);
   }
   o.putImageData(img,0,0);cloudCache={key,cv};return cv;
 }
@@ -231,7 +231,7 @@ function updNote(){
   note.innerHTML=s;
   legend.innerHTML=(layers.wind?'<div>Wind m/s</div><div class="bar"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0</span><span>6</span><span>12+</span></div>':'')
     +(layers.rad?'<div style="margin-top:4px">Radiation W/m²</div><div class="bar rb"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0</span><span>'+(DATA.some(d=>d.ssrd)?'320':'560')+'</span></div>':'')
-    +(layers.cloud?'<div style="margin-top:4px">Cloud cover</div><div style="height:8px;width:160px;border-radius:2px;background:linear-gradient(90deg,rgba(150,180,225,0),rgba(150,180,225,.8))"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0%</span><span>100%</span></div>':'');
+    +(layers.cloud?'<div style="margin-top:4px">Cloud cover</div><div style="height:8px;width:160px;border-radius:2px;background:linear-gradient(90deg,rgba(95,130,190,0),rgba(95,130,190,.8))"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0%</span><span>100%</span></div>':'');
 }
 file.onchange=async e=>{
   for(const f of e.target.files){
