@@ -41,7 +41,19 @@ To show real data, click **Load ERA5 (.json)** and pick one or more JSON files c
 | `ssrd` *(optional)* | Surface solar radiation in W/m², same layout; enables real radiation |
 | `tcc` *(optional)* | Total cloud cover, same layout; enables the Clouds layer |
 
-The page's error message mentions an `era5_to_json.py` converter. That script isn't in this repo yet.
+`scripts/era5_to_json.py` downloads ERA5 monthly means from Copernicus and writes this JSON (it needs `COPERNICUS_KEY` in `.env`, see *Python scripts* below):
+
+```powershell
+.venv/Scripts/python scripts/era5_to_json.py --region amazon
+.venv/Scripts/python scripts/era5_to_json.py --region borneo
+```
+
+- `--region`: `amazon`, `borneo` or `world`.
+- `--years`: default `2005-2024`; one year such as `2023` also works.
+- `--grid`: resolution in degrees, default `1` (about 4 MB for the Amazon over 20 years). `0.25` is ERA5's native resolution and makes files about 16 times larger.
+- `--from-file`: convert a NetCDF you already downloaded instead of downloading again.
+
+The JSON is saved in `data/raw/era5/`, which git ignores. ERA5 is licensed CC-BY 4.0: credit the Copernicus Climate Change Service when you share it.
 
 Loaded files stay in your browser only. They are not uploaded anywhere, and reloading the page goes back to demo mode.
 
