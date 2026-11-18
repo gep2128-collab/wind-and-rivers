@@ -6,7 +6,7 @@ const COLS=['#3987e5','#1baf7a','#9bc53d','#eda100','#eb6834','#e34948'];
 const BRK=[2,4,6,8,11];
 
 const stage=document.getElementById('stage');
-const C={base:cBase,rad:cRad,riv:cRiv,part:cPart};
+const C={base:cBase,rad:cRad,riv:cRiv,part:cPart,lab:cLab};
 const X={};for(const k in C)X[k]=C[k].getContext('2d');
 const proj=d3.geoEquirectangular();
 let W=0,H=0,dpr=1,T=d3.zoomIdentity,landPath,riverGroups=[],riverLabels=[];
@@ -43,11 +43,6 @@ function drawBase(){
   const c=X.base;c.setTransform(1,0,0,1,0,0);c.fillStyle='#000';c.fillRect(0,0,W*dpr,H*dpr);
   setT(c);c.fillStyle='#fff';c.fill(landPath);
   c.setTransform(dpr,0,0,dpr,0,0);
-  for(const z in ZONES){
-    const [w,s,e,n]=ZONES[z].b,a=scr(w,n),b=scr(e,s);
-    c.strokeStyle='#eb6834';c.lineWidth=1.5;c.setLineDash([6,4]);c.strokeRect(a[0],a[1],b[0]-a[0],b[1]-a[1]);c.setLineDash([]);
-    c.font='bold 12px Arial,sans-serif';c.fillStyle='#eb6834';c.fillText(ZONES[z].name.toUpperCase(),a[0],a[1]-7);
-  }
   if(layers.rivers&&T.k>2.5){
     c.font='italic 11px Arial,sans-serif';c.fillStyle='#1d4f8f';
     for(const l of riverLabels){if(T.k<5&&l.r>5)continue;const x=T.x+T.k*l.p[0],y=T.y+T.k*l.p[1];if(x>0&&x<W&&y>0&&y<H)c.fillText(l.n,x+4,y-4);}
@@ -116,7 +111,31 @@ function drawGrid(c,d,k,col){
   const a=proj([lx-hx,ty+hy]),b=proj([lx+(d.nx-1)*Math.abs(d.dlon)+hx,ty-(d.ny-1)*Math.abs(d.dlat)-hy]);
   c.imageSmoothingEnabled=true;c.drawImage(oc,a[0],a[1],b[0]-a[0],b[1]-a[1]);
 }
-function redrawStatic(){drawBase();drawRad();X.part.setTransform(1,0,0,1,0,0);X.part.clearRect(0,0,W*dpr,H*dpr);}
+// Study areas and the latitude band they share, drawn on the top canvas so they stay readable.
+function drawZones(){
+  const c=X.lab;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W*dpr,H*dpr);c.setTransform(dpr,0,0,dpr,0,0);
+  const bs=Object.values(ZONES).map(z=>z.b),bandS=Math.max(...bs.map(b=>b[1])),bandN=Math.min(...bs.map(b=>b[3]));
+  const x0=scr(-180,0)[0],x1=scr(180,0)[0];
+  c.lineWidth=1;c.strokeStyle='rgba(255,255,255,.75)';c.setLineDash([7,6]);
+  for(const lat of[bandN,bandS]){const y=scr(0,lat)[1];c.beginPath();c.moveTo(x0,y);c.lineTo(x1,y);c.stroke();}
+  c.setLineDash([]);
+  const yN=scr(0,bandN)[1],yS=scr(0,bandS)[1],xl=Math.max(x0,0)+8;
+  c.font='11px Arial,sans-serif';c.textBaseline='middle';
+  const lab=(t,x,y)=>{c.lineWidth=3;c.strokeStyle='rgba(0,0,0,.85)';c.strokeText(t,x,y);c.fillStyle='#fff';c.fillText(t,x,y);};
+  lab(`${bandN}°N`,xl,yN-8);lab(`${Math.abs(bandS)}°S`,xl,yS+8);
+  // band name only where it does not run into a study-area label
+  const t='Shared latitude band',tx=xl+36,ax=Math.min(...Object.values(ZONES).map(z=>scr(z.b[0],z.b[3])[0]).filter(x=>x>tx));
+  if(!(tx+c.measureText(t).width+8>ax))lab(t,tx,yN-8);
+  for(const z in ZONES){
+    const [w,s,e,n]=ZONES[z].b,a=scr(w,n),b=scr(e,s);
+    c.strokeStyle='#ff8a4c';c.lineWidth=2.6;c.lineCap='round';c.setLineDash([0,6]);
+    c.beginPath();c.roundRect(a[0],a[1],b[0]-a[0],b[1]-a[1],4);c.stroke();c.setLineDash([]);
+    c.font='bold 12px Arial,sans-serif';c.textBaseline='alphabetic';c.lineWidth=4;c.strokeStyle='rgba(0,0,0,.85)';
+    const t=ZONES[z].name.toUpperCase();c.strokeText(t,a[0],a[1]-7);c.fillStyle='#ff8a4c';c.fillText(t,a[0],a[1]-7);
+  }
+  c.lineCap='butt';
+}
+function redrawStatic(){drawBase();drawRad();drawZones();X.part.setTransform(1,0,0,1,0,0);X.part.clearRect(0,0,W*dpr,H*dpr);}
 
 function psi(lon,lat,t){
   const M=[[.12,.15,12,1.3,.7],[.21,.18,8,-.9,1.1],[.33,.29,4.5,.8,-.6],[.9,.8,1,1.7,1.2]];

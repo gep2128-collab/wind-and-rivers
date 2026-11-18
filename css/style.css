@@ -6,7 +6,8 @@ html,body{font-variant-numeric:tabular-nums;margin:0;height:100%;background:#000
 #stage canvas{position:absolute;inset:0;width:100%;height:100%}
 .pan{position:fixed;background:var(--pan);border:1px solid var(--bd);border-radius:10px;padding:9px 12px;backdrop-filter:blur(6px)}
 #head{top:16px;left:16px;padding:11px 14px}
-#head h1{font-family:Arial,sans-serif;font-size:17px;font-weight:bold;margin:0;line-height:1.2;max-width:330px}
+#head h1{font-family:Arial,sans-serif;font-size:20px;font-weight:bold;margin:0;line-height:1.2}
+#head .subt{font-size:12px;font-weight:normal;color:var(--ink);margin-top:2px;white-space:nowrap}
 #head .sub{font-family:Arial,sans-serif;font-size:10px;letter-spacing:.12em;color:var(--mut);margin-top:4px;text-transform:uppercase}
 #date{font-family:Arial,sans-serif;font-size:24px;font-weight:500;margin-top:6px;letter-spacing:.04em}
 #zoom{top:16px;right:16px;display:flex;gap:4px;padding:6px}
@@ -36,4 +37,4 @@ label.file input{display:none}
 #ensoC{width:100%;height:44px;cursor:pointer;touch-action:none}
 #legend .sb{background:linear-gradient(90deg,#2166ac,#67a9cf,#1a1a1a,#ef8a62,#b2182b)}
 @media (max-width:760px){#enso{grid-template-columns:1fr}}
-@media (max-width:760px){#ctrl{grid-template-columns:1fr;left:8px;right:8px;bottom:8px}#head{top:8px;left:8px}#head h1{font-size:14px;max-width:230px}#date{font-size:18px}#zoom{top:8px;right:8px;flex-direction:column}}
+@media (max-width:760px){#ctrl{grid-template-columns:1fr;left:8px;right:8px;bottom:8px}#head{top:8px;left:8px}#head h1{font-size:16px}#head .subt{font-size:9.5px}#date{font-size:18px}#zoom{top:auto;bottom:auto;right:auto;left:8px;top:122px;flex-direction:row}}
