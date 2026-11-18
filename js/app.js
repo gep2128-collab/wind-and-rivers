@@ -140,7 +140,16 @@ function drawZones(){
   }
   c.lineCap='butt';
 }
-function redrawStatic(){drawBase();drawRad();drawZones();X.part.setTransform(1,0,0,1,0,0);X.part.clearRect(0,0,W*dpr,H*dpr);}
+// Still part of the rivers (deep-teal banks + light-cyan water), cached until the view changes.
+const rivStatic=document.createElement('canvas');let rivLast=0,rivDirty=true;
+function drawRiverBase(){
+  rivStatic.width=W*dpr;rivStatic.height=H*dpr;rivDirty=true;
+  if(!layers.rivers)return;
+  const r=rivStatic.getContext('2d');setT(r);r.lineCap='round';const s=Math.min(2.2,Math.sqrt(T.k)/1.4+.3);
+  for(const g of riverGroups){r.strokeStyle='#0b5d73';r.lineWidth=(g.w*s+1.1)/T.k;r.stroke(g.p);}
+  for(const g of riverGroups){r.strokeStyle='#8eefff';r.lineWidth=g.w*s/T.k;r.stroke(g.p);}
+}
+function redrawStatic(){drawBase();drawRad();drawZones();drawRiverBase();X.part.setTransform(1,0,0,1,0,0);X.part.clearRect(0,0,W*dpr,H*dpr);}
 
 function psi(lon,lat,t){
   const M=[[.12,.15,12,1.3,.7],[.21,.18,8,-.9,1.1],[.33,.29,4.5,.8,-.6],[.9,.8,1,1.7,1.2]];
@@ -213,18 +222,19 @@ function frame(now){
     }
     b.forEach((pth,i)=>{c.strokeStyle=COLS[i];c.stroke(pth);});
   }
-  const r=X.riv;r.setTransform(1,0,0,1,0,0);r.clearRect(0,0,W*dpr,H*dpr);
-  if(layers.rivers){
-    setT(r);r.lineCap='round';const s=Math.min(2.2,Math.sqrt(T.k)/1.4+.3);
-    // Rivers: deep-teal banks, light-cyan water, and two currents moving downstream at
-    // different speeds (deep blue ripples + white glints) so the flow reads like water.
-    const t=now/1000;
-    for(const g of riverGroups){r.setLineDash([]);r.strokeStyle='#0b5d73';r.lineWidth=(g.w*s+1.1)/T.k;r.stroke(g.p);}
-    for(const g of riverGroups){r.strokeStyle='#8eefff';r.lineWidth=g.w*s/T.k;r.stroke(g.p);}
-    riverGroups.forEach((g,i)=>{const v=(26-i*4)/T.k;
-      r.setLineDash([6/T.k,4/T.k,2/T.k,9/T.k]);r.lineDashOffset=-t*v;r.strokeStyle='rgba(23,92,190,.75)';r.lineWidth=g.w*s*.55/T.k;r.stroke(g.p);
-      r.setLineDash([1.5/T.k,15/T.k]);r.lineDashOffset=-t*v*1.6;r.strokeStyle='rgba(255,255,255,.95)';r.lineWidth=g.w*s*.45/T.k;r.stroke(g.p);});
-    r.setLineDash([]);
+  // Rivers: the still banks and water come from a cached canvas (redrawn only on zoom/pan);
+  // each frame only the moving currents are drawn, at most ~30 times a second.
+  if(now-rivLast>=33||rivDirty){
+    rivLast=now;rivDirty=false;
+    const r=X.riv;r.setTransform(1,0,0,1,0,0);r.clearRect(0,0,W*dpr,H*dpr);
+    if(layers.rivers){
+      r.drawImage(rivStatic,0,0);
+      setT(r);r.lineCap='round';const s=Math.min(2.2,Math.sqrt(T.k)/1.4+.3),t=now/1000;
+      riverGroups.forEach((g,i)=>{const v=(26-i*4)/T.k;
+        r.setLineDash([6/T.k,4/T.k,2/T.k,9/T.k]);r.lineDashOffset=-t*v;r.strokeStyle='rgba(23,92,190,.75)';r.lineWidth=g.w*s*.55/T.k;r.stroke(g.p);
+        r.setLineDash([1.5/T.k,15/T.k]);r.lineDashOffset=-t*v*1.6;r.strokeStyle='rgba(255,255,255,.95)';r.lineWidth=g.w*s*.45/T.k;r.stroke(g.p);});
+      r.setLineDash([]);
+    }
   }
   requestAnimationFrame(frame);
 }
