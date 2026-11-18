@@ -112,7 +112,7 @@ function drawGrid(c,d,k,col){
   c.imageSmoothingEnabled=true;c.drawImage(oc,a[0],a[1],b[0]-a[0],b[1]-a[1]);
 }
 // Study areas and the latitude band they share, drawn on the top canvas so they stay readable.
-const MAGENTA='#ff2fd8';
+const ZONE_COLOR='#ffa51f'; // one orange for study-area names and frames
 function drawZones(){
   const c=X.lab;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W*dpr,H*dpr);c.setTransform(dpr,0,0,dpr,0,0);
   const bs=Object.values(ZONES).map(z=>z.b),bandS=Math.max(...bs.map(b=>b[1])),bandN=Math.min(...bs.map(b=>b[3]));
@@ -130,10 +130,13 @@ function drawZones(){
   if(!(tx+c.measureText(t).width+8>ax))lab(t,tx,yN-8);
   for(const z in ZONES){
     const [w,s,e,n]=ZONES[z].b,a=scr(w,n),b=scr(e,s);
-    c.strokeStyle=MAGENTA;c.lineWidth=1.1;c.lineCap='round';c.setLineDash([0,3.5]);
+    c.strokeStyle=ZONE_COLOR;c.lineWidth=1.1;c.lineCap='round';c.setLineDash([0,3.5]);
     c.beginPath();c.roundRect(a[0],a[1],b[0]-a[0],b[1]-a[1],4);c.stroke();c.setLineDash([]);
-    c.font='12px Arial,sans-serif';c.textBaseline='alphabetic';
-    c.fillStyle='#000';c.fillText(ZONES[z].name.toUpperCase(),a[0],a[1]-7);
+    c.font='13px Arial,sans-serif';c.textBaseline='alphabetic';
+    // soft shadow (not an outline) so the orange stands out on red sea and white land
+    const nm=ZONES[z].name.toUpperCase();c.shadowColor='rgba(0,0,0,.95)';c.shadowBlur=7;c.fillStyle=ZONE_COLOR;
+    for(let k=0;k<3;k++)c.fillText(nm,a[0],a[1]-7); // stacked soft shadows form a dark glow behind the text
+    c.shadowBlur=0;c.shadowColor='transparent';c.fillText(nm,a[0],a[1]-7);
   }
   c.lineCap='butt';
 }
