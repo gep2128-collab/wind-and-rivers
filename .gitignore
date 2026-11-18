@@ -1,0 +1,10 @@
+# Datos con licencia restringida: NUNCA subir al repositorio público
+# Restricted-licence data: NEVER commit to the public repository
+data/restricted/
+data/raw/
+
+# Claves de API / API keys
+.env
+.cdsapirc
+*.key
+secrets/

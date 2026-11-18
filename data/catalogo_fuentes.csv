@@ -1,0 +1,49 @@
+source_id,tema_topic,nombre_name,proveedor_provider,resolucion_espacial,resolucion_temporal,periodo,formato,acceso_access,estado_status,url
+oisst_v21,ocean,NOAA OISST v2.1 SST,NOAA NCEI,0.25°,daily,1981-present,NetCDF/CSV,libre / open,verificado,https://www.ncei.noaa.gov/products/optimum-interpolation-sst
+oisst_erddap,ocean,OISST v2.1 via ERDDAP (recortes / subsets),NOAA CoastWatch,0.25°,daily,1981-present,NetCDF/CSV/JSON,libre / open,verificado,https://coastwatch.pfeg.noaa.gov/erddap/griddap/ncdcOisst21Agg_LonPM180.html
+ersst_v5,ocean,NOAA ERSST v5,NOAA NCEI,2°,monthly,1854-present,NetCDF,libre / open,verificado,https://www.ncei.noaa.gov/products/extended-reconstructed-sst
+oni,ocean,Oceanic Niño Index (ONI),NOAA CPC,index,monthly,1950-present,TXT/HTML,libre / open,verificado,https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php
+nino_indices,ocean,Niño 1+2 / 3 / 3.4 / 4 indices,NOAA CPC,index,monthly,1982-present,TXT,libre / open,verificado,https://www.cpc.ncep.noaa.gov/data/indices/sstoi.indices
+icen,ocean,Índice Costero El Niño (ICEN),ENFEN / IGP,index,monthly,1950-present,TXT/PDF,libre / open,por verificar (IGP no respondió),http://www.met.igp.gob.pe/datos/icen.txt
+enfen,ocean,Comunicados oficiales ENFEN,ENFEN (IMARPE),Perú,monthly,2000s-present,PDF,libre / open,verificado,https://enfen.imarpe.gob.pe/
+era5_monthly,atmosphere,ERA5 monthly single levels (u10 v10 t2m tcc tp sst ssrd),Copernicus C3S,0.25°,monthly,1940-present,NetCDF/GRIB,cuenta gratuita / free account,verificado,https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels-monthly-means
+gpm_imerg,atmosphere,GPM IMERG precipitation,NASA,0.1°,30 min-monthly,2000-present,NetCDF/HDF5,cuenta Earthdata,verificado,https://gpm.nasa.gov/data/directory
+chirps,atmosphere,CHIRPS precipitation,UCSB CHC,0.05°,daily,1981-present,GeoTIFF/NetCDF,libre / open,verificado,https://www.chc.ucsb.edu/data/chirps
+pisco,atmosphere,PISCO precipitación y temperatura Perú,SENAMHI,0.1°,daily/monthly,1981-2016+,NetCDF,libre / open,por verificar,https://iridl.ldeo.columbia.edu/SOURCES/.SENAMHI/.HSR/.PISCO/
+senamhi_stations,atmosphere,Estaciones hidrometeorológicas,SENAMHI,point,daily,variable,CSV,libre / solicitud,verificado,https://www.senamhi.gob.pe/?&p=descarga-datos-hidrometeorologicos
+modis_clouds,atmosphere,MODIS MOD08_M3 cloud fraction,NASA LAADS,1°,monthly,2000-present,HDF,cuenta Earthdata,verificado,https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/products/MOD08_M3
+ana_snirh,impact,Caudales de ríos (Rímac Chillón Lurín),ANA Perú,point,daily,variable,web/CSV,libre / open,verificado,http://snirh.ana.gob.pe/visors2/
+desinventar,impact,Inventario de desastres Perú,DesInventar / UNDRR,district,event,1970-present,CSV,libre / open,por verificar,https://www.desinventar.net/
+firms,fire,NASA FIRMS hotspots (MODIS VIIRS),NASA,375 m-1 km point,daily,2000-present,CSV/SHP/API,MAP_KEY gratuita,verificado,https://firms.modaps.eosdis.nasa.gov/download/
+mcd64a1,fire,MODIS MCD64A1 burned area,NASA LP DAAC,500 m,monthly,2000-present,HDF/GeoTIFF,cuenta Earthdata,verificado,https://lpdaac.usgs.gov/products/mcd64a1v061/
+gfed5,fire,GFED5 burned area and emissions,GFED (VU Amsterdam),0.25°,monthly,1997-present,NetCDF,libre CC-BY,verificado,https://globalfiredata.org/data.html
+cams_gfas,fire,CAMS GFAS fire emissions,Copernicus CAMS,0.1°,daily,2003-present,NetCDF,cuenta gratuita,verificado,https://ads.atmosphere.copernicus.eu/datasets/cams-global-fire-emissions-gfas
+gfw_loss,fire,Hansen tree cover loss (and loss from fires),UMD / GFW,30 m,annual,2001-present,GeoTIFF/API,libre / open,verificado,https://data-api.globalforestwatch.org/dataset/umd_tree_cover_loss
+mapbiomas_fogo,fire,MapBiomas Fogo burn scars (Brasil),MapBiomas,30 m,monthly/annual,1985-2024,GeoTIFF/SHP/GEE,libre CC-BY,verificado,https://brasil.mapbiomas.org/en/mapbiomas-fogo/
+mapbiomas_amazonia,landcover,MapBiomas Amazonía land cover,RAISG / MapBiomas,30 m,annual,1985-present,GeoTIFF/GEE,libre CC-BY,verificado,https://amazonia.mapbiomas.org/
+inpe_queimadas,fire,INPE Queimadas,INPE,point/30 m,daily,1998-present,CSV/SHP,libre / open,verificado,https://terrabrasilis.dpi.inpe.br/queimadas/portal/
+geobosques,fire,GEOBOSQUES pérdida de bosque y alertas Perú,MINAM,30 m,annual/weekly,2001-present,SHP/GeoTIFF,libre / open,verificado,https://geobosques.minam.gob.pe/
+gwis,fire,Global Wildfire Information System,Copernicus JRC,country/grid,daily-annual,2001-present,web/CSV,libre / open,verificado,https://gwis.jrc.ec.europa.eu/
+fwi_era5,fire,Fire Weather Index from ERA5 (CEMS),Copernicus CEMS,0.25°,daily,1940-present,NetCDF,cuenta gratuita,verificado,https://ewds.climate.copernicus.eu/datasets/cems-fire-historical-v1
+nusantara_atlas,economy,Nusantara Atlas deforestation fires concessions,TheTreeMap,30 m/polygon,daily-annual,2000-present,web,libre (exportación por verificar),parcial,https://nusantara-atlas.org/about/
+iucn_spatial,biodiversity,IUCN Red List range maps,IUCN,polygon,static,current,SHP/GDB,cuenta gratuita no comercial,verificado,https://www.iucnredlist.org/resources/spatial-data-download
+birdlife,biodiversity,BirdLife bird distributions,BirdLife International,polygon,static,current,GDB,solicitud / request,verificado,https://datazone.birdlife.org/contact-us/request-our-data
+bien,biodiversity,BIEN plant ranges (Americas),BIEN,polygon/grid,static,current,R package/SHP,libre / open,verificado,https://bien.nceas.ucsb.edu/bien/
+gbif,biodiversity,GBIF species occurrences,GBIF,point,event,all,DwC-A/Parquet/API,cuenta gratuita,verificado,https://techdocs.gbif.org/en/data-use/api-downloads
+wdpa,people,World Database on Protected Areas,UNEP-WCMC,polygon,monthly update,current,SHP/GDB,libre no comercial,verificado,https://www.protectedplanet.net/en/thematic-areas/wdpa
+raisg,people,RAISG territorios indígenas áreas protegidas minería petróleo,RAISG,polygon,periodic,current,SHP/WMS,libre con cita,verificado,https://www.amazoniasocioambiental.org/en/maps/
+landmark,people,LandMark indigenous and community lands,LandMark,polygon,periodic,current,SHP,libre / open,verificado,https://www.landmarkmap.org/
+worldpop,people,WorldPop population,WorldPop,100 m,annual,2000-2020+,GeoTIFF,libre CC-BY,verificado,https://hub.worldpop.org/
+ghsl,people,GHSL population and settlements,Copernicus JRC,100 m-1 km,5-yearly,1975-2030,GeoTIFF,libre / open,verificado,https://human-settlement.emergency.copernicus.eu/
+modis_npp,productivity,MODIS MOD17A3HGF NPP (→ O2 estimado),NASA LP DAAC,500 m,annual,2000-present,HDF/GeoTIFF,cuenta Earthdata,verificado,https://lpdaac.usgs.gov/products/mod17a3hgfv061/
+modis_gpp,productivity,MODIS MOD17A2H GPP,NASA LP DAAC,500 m,8-day,2000-present,HDF/GeoTIFF,cuenta Earthdata,verificado,https://lpdaac.usgs.gov/products/mod17a2hv061/
+gfw_concessions,economy,Oil palm / wood fiber / logging concessions,Global Forest Watch,polygon,periodic,current,SHP/GeoJSON,libre / open,verificado,https://data.globalforestwatch.org/
+cifor_borneo,economy,Atlas of Deforestation and Industrial Plantations in Borneo,CIFOR,polygon/point,annual,2000-2019+,SHP,libre / open,por verificar,https://atlas.cifor.org/borneo/
+trase,economy,Trase supply chain and deforestation data,SEI / Global Canopy,municipality,annual,2004-2023,CSV,libre / open,verificado,https://trase.earth/open-data
+raisg_mining,economy,RAISG mining and oil (WRI mirror),RAISG / WRI,polygon,periodic,2020-2025,ArcGIS REST,libre con cita,verificado,https://gis.wri.org/server/rest/services/Amazon_Mining
+sicar,economy,SICAR rural property registry (Brasil),SFB Brasil,polygon,continuous,current,SHP,libre / open,por verificar,https://consultapublica.car.gov.br/publico/imoveis/index
+cnpj,economy,CNPJ company registry (Brasil),Receita Federal,address,monthly,current,CSV,libre / open,por verificar,https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj
+osm,economy,OpenStreetMap industrial mining landuse,OSM,vector,continuous,current,PBF/GeoJSON,libre ODbL,verificado,https://download.geofabrik.de/
+cmip6,projection,CMIP6 climate projections,Copernicus C3S,~1°,monthly,2015-2100,NetCDF,cuenta gratuita,verificado,https://cds.climate.copernicus.eu/datasets/projections-cmip6
+nex_gddp,projection,NASA NEX-GDDP-CMIP6,NASA,0.25°,daily,1950-2100,NetCDF,libre (AWS),verificado,https://registry.opendata.aws/nex-gddp-cmip6/
+ipcc_atlas,projection,IPCC Interactive Atlas,IPCC WGI,region,climatology,1850-2100,web/CSV,libre / open,verificado,https://interactive-atlas.ipcc.ch/

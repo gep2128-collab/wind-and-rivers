@@ -1,0 +1,28 @@
+#!/bin/sh
+# Bloquea commits con datos restringidos o claves. / Blocks commits with restricted data or keys.
+# Ver docs/03-licencias-cumplimiento.md
+fail=0
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+
+for f in $staged; do
+  case "$f" in
+    data/restricted/*|data/raw/*|.env|*.cdsapirc|*_netrc|*.netrc|secrets/*)
+      echo "BLOQUEADO: $f es un archivo restringido o de claves."; fail=1 ;;
+    *.shp|*.shx|*.dbf|*.prj|*.gdb/*|*.gpkg|*.zip|*.nc|*.tif|*.tiff|*.parquet)
+      echo "BLOQUEADO: $f es un archivo de datos crudos. Guárdalo en data/restricted/ o data/raw/."; fail=1 ;;
+  esac
+done
+
+# Ninguna clave de .env puede aparecer en lo que se sube. / No .env value may appear in staged content.
+if [ -f .env ] && [ -n "$staged" ]; then
+  grep -E '^[A-Z_]+=.{8,}' .env | cut -d= -f2- | tr -d '\r' | while IFS= read -r secret; do
+    if git diff --cached -U0 | grep -qF -- "$secret"; then
+      echo "BLOQUEADO: una clave de .env aparece en los cambios."; exit 1
+    fi
+  done || fail=1
+fi
+
+if [ $fail -ne 0 ]; then
+  echo "Commit cancelado. Revisa docs/03-licencias-cumplimiento.md"
+  exit 1
+fi
