@@ -11,9 +11,9 @@ const X={};for(const k in C)X[k]=C[k].getContext('2d');
 const proj=d3.geoEquirectangular();
 let W=0,H=0,dpr=1,T=d3.zoomIdentity,landPath,riverGroups=[],riverLabels=[];
 const land=topojson.feature(LAND,LAND.objects.land);
-const layers={wind:true,rivers:true,rad:false,cloud:false};
+const layers={wind:true,rivers:true,sst:true,rad:false,cloud:false};
 
-let Y0=2005,Y1=2024,tm=(2024-Y0)*12;
+let Y0=2005,Y1=2026,tm=0;tm=lastDataTm()??(2024-Y0)*12;
 let playing=false,DATA=[];
 
 function resize(){
@@ -62,8 +62,9 @@ function insol(lat,m){
 function monthF(){return ((tm%12)+12)%12+1;}
 function drawRad(){
   const c=X.rad;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W*dpr,H*dpr);
-  if(!layers.rad&&!layers.cloud)return;
+  if(!layers.rad&&!layers.cloud&&!layers.sst)return;
   setT(c);
+  if(layers.sst)drawSST(c);
   if(layers.rad){
     const ds=DATA.filter(d=>d.ssrd);
     if(ds.length){c.globalAlpha=.6;for(const d of ds)drawGrid(c,d,'ssrd',v=>d3.interpolateInferno(Math.min(1,v/320)));}
@@ -169,7 +170,7 @@ function seed(){const N=Math.round(Math.min(7000,W*H/170));P=[];const v=view();f
 let last=performance.now(),tau=0;
 function frame(now){
   const dt=Math.min(.05,(now-last)/1000);last=now;tau+=dt*.06;
-  if(playing){tm+=dt/2.5;const max=(Y1-Y0+1)*12-1e-3;if(tm>max)tm=0;syncUI();}
+  if(playing){tm+=dt/2.5;const ld=lastDataTm(),max=(ld!=null?ld+1:(Y1-Y0+1)*12)-1e-3;if(tm>max)tm=0;syncUI();}
   const c=X.part;c.setTransform(1,0,0,1,0,0);
   c.globalCompositeOperation='destination-in';c.fillStyle='rgba(0,0,0,.92)';c.fillRect(0,0,W*dpr,H*dpr);c.globalCompositeOperation='source-over';
   if(layers.wind){
@@ -215,9 +216,9 @@ function syncUI(){
   const f=Math.floor(tm),y=Y0+Math.floor(f/12),m=f%12+1;
   if(+yr.value!==y){yr.value=y;}if(+mo.value!==m){mo.value=m;}
   yrO.textContent=y;moO.textContent=MES[m-1];
-  const txt=MES[m-1].toUpperCase()+' '+y;if(date.textContent!==txt){date.textContent=txt;drawRad();}
+  const txt=MES[m-1].toUpperCase()+' '+y;if(date.textContent!==txt){date.textContent=txt;drawRad();ensoSync();}
 }
-yr.oninput=mo.oninput=()=>{tm=(yr.value-Y0)*12+(mo.value-1);syncUI();drawRad();};
+yr.oninput=mo.oninput=()=>{tm=(yr.value-Y0)*12+(mo.value-1);const ld=lastDataTm();if(ld!=null&&tm>ld)tm=ld;syncUI();drawRad();};
 play.onclick=()=>{playing=!playing;play.textContent=playing?'❚❚ Pause':'▶ Play';};
 document.querySelectorAll('#layers button').forEach(b=>b.onclick=()=>{layers[b.dataset.l]=!layers[b.dataset.l];b.classList.toggle('on',layers[b.dataset.l]);redrawStatic();updNote();});
 
@@ -225,11 +226,12 @@ function updNote(){
   const real=DATA.length>0;
   let s=real?`<b>Data loaded:</b> ${DATA.map(d=>d.name).join(', ')}. `:'<b>Demo mode.</b> The wind is a synthetic field (trade winds, an ITCZ that shifts by month, the Asian monsoon, the South American low-level jet), not measurements. Load a JSON converted from ERA5 to see real data. ';
   s+='Rivers: Natural Earth 10m, flow animated toward the river mouth. ';
+  if(layers.sst)s+=`Sea temperature: monthly anomaly vs ${window.SST_INFO?SST_INFO.clim:'1991–2020'} from ERA5 (contains modified Copernicus Climate Change Service information, 2026); red = warmer than normal, blue = colder. El Niño bar: Oceanic Niño Index (ONI) and Niño 1+2, NOAA CPC. `;
   if(layers.rad)s+=DATA.some(d=>d.ssrd)?'Radiation: ERA5 surface solar radiation (W/m²). ':'Radiation: top-of-atmosphere insolation calculated from orbital geometry (W/m²); surface radiation requires ERA5 or CERES. ';
   if(layers.cloud)s+=DATA.some(d=>d.tcc)?'Clouds: ERA5 total cloud cover. ':'Clouds: synthetic cloud cover (demo), not measurements; load a JSON that includes tcc for real clouds. ';
   s+='Drag to pan, scroll to zoom.';
   note.innerHTML=s;
-  legend.innerHTML=(layers.wind?'<div>Wind m/s</div><div class="bar"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0</span><span>6</span><span>12+</span></div>':'')
+  legend.innerHTML=(layers.sst?'<div>Sea temp anomaly °C</div><div class="bar sb"></div><div style="display:flex;justify-content:space-between;width:160px"><span>−3</span><span>0</span><span>+3</span></div>':'')+(layers.wind?'<div>Wind m/s</div><div class="bar"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0</span><span>6</span><span>12+</span></div>':'')
     +(layers.rad?'<div style="margin-top:4px">Radiation W/m²</div><div class="bar rb"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0</span><span>'+(DATA.some(d=>d.ssrd)?'320':'560')+'</span></div>':'')
     +(layers.cloud?'<div style="margin-top:4px">Cloud cover</div><div style="height:8px;width:160px;border-radius:2px;background:linear-gradient(90deg,rgba(95,130,190,0),rgba(95,130,190,.8))"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0%</span><span>100%</span></div>':'');
 }
@@ -250,9 +252,10 @@ stage.addEventListener('mousemove',e=>{
   probe.style.display='block';probe.style.left=(e.clientX+14)+'px';probe.style.top=(e.clientY+14)+'px';
   let s=`${Math.abs(ll[1]).toFixed(2)}°${ll[1]<0?'S':'N'} ${Math.abs(ll[0]).toFixed(2)}°${ll[0]<0?'W':'E'}`;
   if(w){const sp=Math.hypot(w[0],w[1]),dir=(Math.atan2(-w[0],-w[1])/RAD+360)%360;s+=` · ${sp.toFixed(1)} m/s from ${Math.round(dir)}°`;}
+  if(layers.sst){const a=sstAt(ll[0],ll[1]);if(a!=null)s+=` · sea ${a>0?'+':''}${a.toFixed(1)} °C vs normal`;}
   probe.textContent=s;
 });
 stage.addEventListener('mouseleave',()=>probe.style.display='none');
 
 addEventListener('resize',()=>{resize();seed();});
-resize();seed();syncUI();updNote();requestAnimationFrame(frame);
+resize();seed();syncUI();ensoSync();updNote();requestAnimationFrame(frame);

@@ -50,7 +50,7 @@ Fuentes (APIs)  →  scripts Python (.venv)  →  data/raw/        (grande, no s
 
 | # | Sección | Qué ve el usuario | Datos |
 |---|---|---|---|
-| 1 | **El océano** | Mapa de anomalía de TSM (azul–blanco–rojo) mes a mes, con la línea de tiempo del ONI e ICEN; los años El Niño quedan resaltados | OISST mensual, ONI, Niño 1+2 |
+| 1 | **El océano** | Mapa de anomalía de TSM (azul–blanco–rojo) mes a mes, con la línea de tiempo del ONI e ICEN; los años El Niño quedan resaltados | ERA5 (TSM mensual a 2°), ONI, Niño 1+2 |
 | 2 | **El aire** | Las capas actuales (viento, radiación, nubes) más temperatura a 2 m y lluvia | ERA5 mensual |
 | 3 | **El clima en la Amazonía y Borneo** | Series de temperatura del aire, lluvia, nubosidad y humedad frente al ONI; comparación año El Niño vs. año normal; tarjetas para 2015–16, 2023–24 y 2026 | ERA5, índices |
 | 4 | **El fuego** | Densidad mensual de focos y área quemada en la Amazonía y Borneo; gráfico de focos frente al ONI con desfase de meses | FIRMS agregado, MCD64A1, GFED5 |

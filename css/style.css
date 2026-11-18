@@ -27,4 +27,10 @@ input[type=range]{width:100%;accent-color:var(--acc)}
 #probe{position:fixed;pointer-events:none;font:12px 'IBM Plex Mono',monospace;background:var(--pan);border:1px solid var(--bd);border-radius:6px;padding:4px 8px;display:none;white-space:nowrap}
 label.file{font:500 13px 'IBM Plex Sans';border:1px dashed var(--bd);border-radius:8px;padding:7px 12px;cursor:pointer}
 label.file input{display:none}
+#ensoNow{font:12px 'IBM Plex Mono',monospace;color:var(--mut);margin-top:6px}
+#ensoNow b{font-weight:500;color:var(--ink)}#ensoNow b.nino{color:#ff7a6e}#ensoNow b.nina{color:#7fb2f0}
+#enso{grid-column:1/-1;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:center;font:11px 'IBM Plex Mono',monospace;color:var(--mut)}
+#ensoC{width:100%;height:56px;cursor:pointer;touch-action:none}
+#legend .sb{background:linear-gradient(90deg,#2166ac,#67a9cf,#1a1a1a,#ef8a62,#b2182b)}
+@media (max-width:760px){#enso{grid-template-columns:1fr}}
 @media (max-width:760px){#ctrl{grid-template-columns:1fr}#head h1{font-size:20px}#date{font-size:22px}#zoom{top:auto;bottom:250px}}
