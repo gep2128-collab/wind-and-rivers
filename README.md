@@ -50,7 +50,7 @@ To show real data, click **Load ERA5 (.json)** and pick one or more JSON files c
 
 - `--region`: `amazon`, `borneo` or `world`.
 - `--years`: default `2005-2024`; one year such as `2023` also works.
-- `--grid`: resolution in degrees, default `1` (about 4 MB for the Amazon over 20 years). `0.25` is ERA5's native resolution and makes files about 16 times larger.
+- `--grid`: resolution in degrees, default `1` (about 6 MB for the Amazon over 20 years). `0.25` is ERA5's native resolution and makes files about 16 times larger.
 - `--from-file`: convert a NetCDF you already downloaded instead of downloading again.
 
 The JSON is saved in `data/raw/era5/`, which git ignores. ERA5 is licensed CC-BY 4.0: credit the Copernicus Climate Change Service when you share it.
