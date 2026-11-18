@@ -6,7 +6,7 @@
 <title>El Niño-Driven Wildfires: A Comparative Data Study of the Amazon and Borneo Rainforests</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-<link rel="stylesheet" href="css/style.css?v=17">
+<link rel="stylesheet" href="css/style.css?v=18">
 </head>
 <body>
 <div id="stage"><canvas id="cBase"></canvas><canvas id="cRad"></canvas><canvas id="cRiv"></canvas><canvas id="cPart"></canvas><canvas id="cLab"></canvas></div>
@@ -17,6 +17,8 @@
   <div class="sub">Amazon · Borneo · 2005–2026</div>
   <div id="date">OCT 2026</div>
   <div id="ensoNow"></div>
+  <div id="climaNow"></div>
+  <div id="fireNow"></div>
 </div>
 
 <div id="zoom" class="pan">
@@ -29,6 +31,9 @@
   <div class="row" id="layers">
     <button data-l="wind" class="on">Wind</button>
     <button data-l="sst" class="on">Sea temp</button>
+    <button data-l="fire" class="on">Fire</button>
+    <button data-l="t2m">Air temp</button>
+    <button data-l="tp">Rain</button>
     <button data-l="rivers" class="on">Rivers</button>
     <button data-l="rad">Radiation</button>
     <button data-l="cloud">Clouds</button>
@@ -48,7 +53,10 @@
     <b>Sea temperature:</b> ERA5 monthly means, sea surface temperature anomaly vs 1991–2020. Contains modified Copernicus Climate Change Service information, 2026 (CC BY 4.0).
     <b>El Niño:</b> Oceanic Niño Index (ONI) and Niño 1+2 / 3.4 indices, NOAA Climate Prediction Center.
     <b>Rivers and land:</b> Natural Earth 10 m.
-    <b>Demo layers:</b> without loaded ERA5 files, wind and clouds are synthetic fields and radiation is calculated from the Sun's position; they are not measurements.
+    <b>Wind, clouds, radiation, air temperature, rain and regional climate (Amazon and Borneo):</b> ERA5 monthly averaged reanalysis on single levels, 0.5° grid (Hersbach et al., 2023, doi:10.24381/cds.f17050d7). Generated using Copernicus Climate Change Service information, 2026 (CC BY 4.0); neither the European Commission nor ECMWF is responsible for any use of this information. Regional figures are land-cell averages compared with 1991–2020.
+    <b>Fire hotspots:</b> NASA FIRMS, MODIS Collection 6.1 active fires (doi:10.5067/FIRMS/MODIS/MCD14ML), vegetation fires with confidence ≥ 30 %. We acknowledge the use of data and imagery from LANCE FIRMS operated by NASA's Earth Science Data and Information System (ESDIS).
+    <b>Fire CO₂ and burned area:</b> GFED5.1 (van der Werf, Chen et al., doi:10.5281/zenodo.16794692, CC BY 4.0) to 2022. From 2023 the figures are estimates: CO₂ from CAMS Global Fire Assimilation System (GFAS), Copernicus Atmosphere Monitoring Service, scaled to GFED5.1; burned area from FIRMS hotspots.
+    <b>Demo layers:</b> outside the Amazon and Borneo there is no wind data; radiation and clouds there are only drawn from files you load.
     Drag to pan, scroll to zoom.
   </div>
 </div>
@@ -58,7 +66,14 @@
 <script src="data/rivers.js"></script>
 <script src="data/public/enso.js"></script>
 <script src="data/public/sst/index.js" onerror="void 0"></script>
-<script src="js/ocean.js?v=17"></script>
-<script src="js/app.js?v=17"></script>
+<script src="data/public/era5/index.js" onerror="void 0"></script>
+<script src="data/public/clima_regional.js" onerror="void 0"></script>
+<script src="data/public/fuego/index.js" onerror="void 0"></script>
+<script src="data/public/fuego_mensual.js" onerror="void 0"></script>
+<script src="data/public/co2_regional.js" onerror="void 0"></script>
+<script src="js/ocean.js?v=18"></script>
+<script src="js/air.js?v=18"></script>
+<script src="js/fire.js?v=18"></script>
+<script src="js/app.js?v=18"></script>
 </body>
 </html>

@@ -11,10 +11,12 @@ const X={};for(const k in C)X[k]=C[k].getContext('2d');
 const proj=d3.geoEquirectangular();
 let W=0,H=0,dpr=1,T=d3.zoomIdentity,landPath,riverGroups=[],riverLabels=[];
 const land=topojson.feature(LAND,LAND.objects.land);
-const layers={wind:true,rivers:true,sst:true,rad:false,cloud:false};
+const layers={wind:true,rivers:true,sst:true,fire:true,t2m:false,tp:false,rad:false,cloud:false};
 
 let Y0=2005,Y1=2026,tm=0;tm=lastDataTm()??(2024-Y0)*12;
 let playing=false,DATA=[];
+// ERA5 for the Amazon and Borneo loads by itself (js/air.js); files loaded with the button are added on top.
+if(window.AIR)for(const r in AIR.sets)DATA.push(AIR.sets[r]);
 
 function resize(){
   dpr=Math.min(2,window.devicePixelRatio||1);W=innerWidth;H=innerHeight;
@@ -57,9 +59,11 @@ function insol(lat,m){
 function monthF(){return ((tm%12)+12)%12+1;}
 function drawRad(){
   const c=X.rad;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W*dpr,H*dpr);
-  if(!layers.rad&&!layers.cloud&&!layers.sst)return;
+  if(!layers.rad&&!layers.cloud&&!layers.sst&&!layers.t2m&&!layers.tp&&!layers.fire)return;
   setT(c);
   if(layers.sst)drawSST(c);
+  if(layers.t2m){c.globalAlpha=.85;for(const d of DATA.filter(d=>d.t2m))drawGrid(c,d,'t2m',v=>d3.interpolateRdYlBu(1-Math.max(0,Math.min(1,(v-10)/25))));}
+  if(layers.tp){c.globalAlpha=1;for(const d of DATA.filter(d=>d.tp))drawGrid(c,d,'tp',v=>`rgba(40,120,235,${(Math.min(1,Math.max(0,v)/12)*.9).toFixed(2)})`);}
   if(layers.rad){
     const ds=DATA.filter(d=>d.ssrd);
     if(ds.length){c.globalAlpha=.6;for(const d of ds)drawGrid(c,d,'ssrd',v=>d3.interpolateInferno(Math.min(1,v/320)));}
@@ -70,6 +74,7 @@ function drawRad(){
     if(ds.length)for(const d of ds)drawGrid(c,d,'tcc',v=>`rgba(95,130,190,${(Math.max(0,Math.min(1,v))*.8).toFixed(2)})`);
     else{const a=proj([-180,90]),b=proj([180,-90]);c.imageSmoothingEnabled=true;c.drawImage(demoCloudImage(),a[0],a[1],b[0]-a[0],b[1]-a[1]);}
   }
+  if(layers.fire&&window.drawFire)drawFire(c,monthKey());
   c.globalAlpha=1;
 }
 // Demo cloud cover (0-1), a rough climatology: ITCZ band that follows the season,
@@ -101,7 +106,12 @@ function demoCloudImage(){
   }
   o.putImageData(img,0,0);cloudCache={key,cv};return cv;
 }
-function frameOf(d){const f=Math.floor(tm);const key=(Y0+Math.floor(f/12))+'-'+String(f%12+1).padStart(2,'0');return d.idx[key];}
+function frameOf(d){
+  const f=Math.floor(tm),y=Y0+Math.floor(f/12),key=y+'-'+String(f%12+1).padStart(2,'0'),i=d.idx[key];
+  if(i==null)return null;
+  if(d.builtin&&!d.u[i]){airLoad(d.region,y);return null;} // year not downloaded yet
+  return i;
+}
 function drawGrid(c,d,k,col){
   const fi=frameOf(d);if(fi==null)return;const arr=d[k][fi],oc=document.createElement('canvas');oc.width=d.nx;oc.height=d.ny;
   const o=oc.getContext('2d'),img=o.createImageData(d.nx,d.ny);
@@ -181,7 +191,7 @@ function windAt(lon,lat,t){
   if(!DATA.length)return demo(lon,lat,t);
   for(const d of DATA){
     const fi=frameOf(d);if(fi==null)continue;
-    const fr=tm-Math.floor(tm),f2=Math.min(fi+1,d.u.length-1);
+    const fr=tm-Math.floor(tm);let f2=Math.min(fi+1,d.u.length-1);if(!d.u[f2])f2=fi;
     const u1=sample(d,'u',fi,lon,lat);if(u1==null)continue;
     const v1=sample(d,'v',fi,lon,lat),u2=sample(d,'u',f2,lon,lat),v2=sample(d,'v',f2,lon,lat);
     return[u1*(1-fr)+u2*fr,v1*(1-fr)+v2*fr];
@@ -256,7 +266,14 @@ function syncUI(){
   const f=Math.floor(tm),y=Y0+Math.floor(f/12),m=f%12+1;
   if(+yr.value!==y){yr.value=y;}if(+mo.value!==m){mo.value=m;}
   yrO.textContent=y;moO.textContent=MES[m-1];
-  const txt=MES[m-1].toUpperCase()+' '+y;if(date.textContent!==txt){date.textContent=txt;drawRad();ensoSync();}
+  const txt=MES[m-1].toUpperCase()+' '+y;
+  if(date.textContent!==txt){
+    date.textContent=txt;const key=y+'-'+String(m).padStart(2,'0');
+    if(window.airSync)airSync(y);if(window.fireSync)fireSync(y);
+    if(window.climaSync)climaSync(key);
+    const fn=document.getElementById('fireNow');if(fn&&window.fireSummary)fn.innerHTML=fireSummary(key);
+    drawRad();ensoSync();
+  }
 }
 yr.oninput=mo.oninput=()=>{tm=(yr.value-Y0)*12+(mo.value-1);const ld=lastDataTm();if(ld!=null&&tm>ld)tm=ld;syncUI();drawRad();};
 play.onclick=()=>{playing=!playing;play.textContent=playing?'❚❚ Pause':'▶ Play';};
@@ -264,10 +281,14 @@ document.querySelectorAll('#layers button').forEach(b=>b.onclick=()=>{layers[b.d
 
 function updNote(){
   // One or two short lines; the full credits open with "Sources".
-  const real=DATA.length>0,p=[];
-  p.push(real?`<b>Data:</b> ${DATA.map(d=>d.name).join(', ')}`:'<b>Demo wind</b> (synthetic)');
+  const own=DATA.filter(d=>!d.builtin),air=DATA.some(d=>d.builtin),p=[];
+  p.push(air?'Wind: ERA5 (Amazon and Borneo)':'<b>Demo wind</b> (synthetic)');
+  if(own.length)p.push(`<b>Your files:</b> ${own.map(d=>d.name).join(', ')}`);
   if(layers.sst)p.push('Sea temp: ERA5 anomaly vs 1991–2020');
   if(window.ENSO)p.push('El Niño: NOAA ONI');
+  if(layers.fire&&window.FIRE_INFO)p.push('Fire: NASA FIRMS');
+  if(layers.t2m)p.push('Air temp: ERA5');
+  if(layers.tp)p.push('Rain: ERA5');
   if(layers.rivers)p.push('Rivers: Natural Earth');
   if(layers.rad)p.push(DATA.some(d=>d.ssrd)?'Radiation: ERA5':'Radiation: calculated (demo)');
   if(layers.cloud)p.push(DATA.some(d=>d.tcc)?'Clouds: ERA5':'Clouds: synthetic (demo)');
@@ -275,6 +296,9 @@ function updNote(){
   srcBtn.onclick=e=>{e.preventDefault();credits.hidden=!credits.hidden;};
   legend.innerHTML=(layers.sst?'<div>Sea temp anomaly °C</div><div class="bar sb"></div><div style="display:flex;justify-content:space-between;width:120px"><span>−3</span><span>0</span><span>+3</span></div>':'')+(layers.wind?'<div>Wind m/s</div><div class="bar"></div><div style="display:flex;justify-content:space-between;width:120px"><span>0</span><span>6</span><span>12+</span></div>':'')
     +(layers.rad?'<div style="margin-top:4px">Radiation W/m²</div><div class="bar rb"></div><div style="display:flex;justify-content:space-between;width:120px"><span>0</span><span>'+(DATA.some(d=>d.ssrd)?'320':'560')+'</span></div>':'')
+    +(layers.fire&&window.FIRE_INFO?'<div style="margin-top:4px">Fire hotspots per month</div><div style="height:8px;width:120px;border-radius:2px;background:linear-gradient(90deg,#fed976,#fd8d3c,#e31a1c,#800026)"></div><div style="display:flex;justify-content:space-between;width:120px"><span>1</span><span>20</span><span>500+</span></div>':'')
+    +(layers.t2m?'<div style="margin-top:4px">Air temp °C</div><div style="height:8px;width:120px;border-radius:2px;background:linear-gradient(90deg,#4575b4,#ffffbf,#d73027)"></div><div style="display:flex;justify-content:space-between;width:120px"><span>10</span><span>22</span><span>35</span></div>':'')
+    +(layers.tp?'<div style="margin-top:4px">Rain mm/day</div><div style="height:8px;width:120px;border-radius:2px;background:linear-gradient(90deg,rgba(40,120,235,0),rgba(40,120,235,.9))"></div><div style="display:flex;justify-content:space-between;width:120px"><span>0</span><span>6</span><span>12+</span></div>':'')
     +(layers.cloud?'<div style="margin-top:4px">Cloud cover</div><div style="height:8px;width:120px;border-radius:2px;background:linear-gradient(90deg,rgba(95,130,190,0),rgba(95,130,190,.8))"></div><div style="display:flex;justify-content:space-between;width:120px"><span>0%</span><span>100%</span></div>':'');
 }
 file.onchange=async e=>{
@@ -295,6 +319,10 @@ stage.addEventListener('mousemove',e=>{
   let s=`${Math.abs(ll[1]).toFixed(2)}°${ll[1]<0?'S':'N'} ${Math.abs(ll[0]).toFixed(2)}°${ll[0]<0?'W':'E'}`;
   if(w){const sp=Math.hypot(w[0],w[1]),dir=(Math.atan2(-w[0],-w[1])/RAD+360)%360;s+=` · ${sp.toFixed(1)} m/s from ${Math.round(dir)}°`;}
   if(layers.sst){const a=sstAt(ll[0],ll[1]);if(a!=null)s+=` · sea ${a>0?'+':''}${a.toFixed(1)} °C vs normal`;}
+  for(const d of DATA.filter(d=>d.builtin)){const fi=frameOf(d);if(fi==null)continue;
+    const t=sample(d,'t2m',fi,ll[0],ll[1]);if(t==null||isNaN(t))continue;
+    s+=` · air ${t.toFixed(1)} °C · rain ${Math.max(0,sample(d,'tp',fi,ll[0],ll[1])).toFixed(1)} mm/day`;break;}
+  if(layers.fire&&window.fireAt){const n=fireAt(ll[0],ll[1],monthKey());if(n)s+=` · ${n} fire hotspots this month`;}
   probe.textContent=s;
 });
 stage.addEventListener('mouseleave',()=>probe.style.display='none');

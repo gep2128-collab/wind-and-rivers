@@ -1,0 +1,2 @@
+// Generado por scripts/fase3_firms.py
+window.FIRE_INFO={"source": "NASA FIRMS, MODIS Collection 6.1 active fires (MCD14), type 0, confidence ≥ 30 %", "grid": 0.5, "regions": {"amazon": {"region": "amazon", "nx": 78, "ny": 54, "lon0": -81.75, "lat0": 5.75, "dlon": 0.5, "dlat": -0.5, "first": "2005-01", "last": "2026-10"}, "borneo": {"region": "borneo", "nx": 24, "ny": 26, "lon0": 108.25, "lat0": 7.75, "dlon": 0.5, "dlat": -0.5, "first": "2005-01", "last": "2026-10"}}};

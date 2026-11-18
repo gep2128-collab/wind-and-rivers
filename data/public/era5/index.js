@@ -1,0 +1,2 @@
+// Generado por scripts/fase2_aire.py
+window.AIR_INFO={"source": "ERA5 monthly means, Copernicus Climate Change Service (C3S), CC BY 4.0", "grid": 0.5, "quant": {"u": [0.1, 0], "v": [0.1, 0], "tcc": [1, 0], "ssrd": [2, 200], "t2m": [0.25, 15], "tp": [0.2, 25]}, "regions": {"amazon": {"region": "amazon", "nx": 79, "ny": 55, "lon0": -82.0, "lat0": 6.0, "dlon": 0.5, "dlat": -0.5, "first": "2005-01", "last": "2026-10"}, "borneo": {"region": "borneo", "nx": 25, "ny": 27, "lon0": 108.0, "lat0": 8.0, "dlon": 0.5, "dlat": -0.5, "first": "2005-01", "last": "2026-10"}}};

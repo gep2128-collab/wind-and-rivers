@@ -39,3 +39,4 @@ label.file input{display:none}
 body.clean .pan{display:none!important}
 @media (max-width:760px){#enso{grid-template-columns:1fr}}
 @media (max-width:760px){#ctrl{grid-template-columns:1fr;left:8px;right:8px;bottom:8px}#head{top:8px;left:8px}#head h1{font-size:16px}#head .subt{font-size:9.5px}#date{font-size:18px}#zoom{top:auto;bottom:auto;right:auto;left:8px;top:122px;flex-direction:row}}
+#climaNow,#fireNow{font:11px Arial,sans-serif;color:var(--mut);margin-top:4px;line-height:1.45}#climaNow b,#fireNow b{color:#ecebe6}#climaNow .warm{color:#ef8a62}#climaNow .cool{color:#67a9cf}#climaNow .mut{font-size:10px;opacity:.8}
