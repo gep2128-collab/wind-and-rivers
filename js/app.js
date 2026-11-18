@@ -62,16 +62,16 @@ function drawRad(){
   if(!layers.rad&&!layers.cloud&&!layers.sst&&!layers.t2m&&!layers.tp&&!layers.fire)return;
   setT(c);
   if(layers.sst)drawSST(c);
-  if(layers.t2m){c.globalAlpha=.85;for(const d of DATA.filter(d=>d.t2m))drawGrid(c,d,'t2m',v=>d3.interpolateRdYlBu(1-Math.max(0,Math.min(1,(v-10)/25))));}
-  if(layers.tp){c.globalAlpha=1;for(const d of DATA.filter(d=>d.tp))drawGrid(c,d,'tp',v=>`rgba(40,120,235,${(Math.min(1,Math.max(0,v)/12)*.9).toFixed(2)})`);}
+  if(layers.t2m){c.globalAlpha=.85;drawSets(c,'t2m',v=>d3.interpolateRdYlBu(1-Math.max(0,Math.min(1,(v-10)/25))));}
+  if(layers.tp){c.globalAlpha=1;drawSets(c,'tp',v=>`rgba(40,120,235,${(Math.min(1,Math.max(0,v)/12)*.9).toFixed(2)})`);}
   if(layers.rad){
     const ds=DATA.filter(d=>d.ssrd);
-    if(ds.length){c.globalAlpha=.6;for(const d of ds)drawGrid(c,d,'ssrd',v=>d3.interpolateInferno(Math.min(1,v/320)));}
+    if(ds.length){c.globalAlpha=.6;drawSets(c,'ssrd',v=>d3.interpolateInferno(Math.min(1,v/320)));}
     else{c.globalAlpha=.5;const m=monthF(),a=proj([-180,90]),b=proj([180,-90]),g=c.createLinearGradient(0,a[1],0,b[1]);for(let lat=90;lat>=-90;lat-=2)g.addColorStop((90-lat)/180,d3.interpolateInferno(Math.max(0,insol(lat,m))/560));c.fillStyle=g;c.fillRect(a[0],a[1],b[0]-a[0],b[1]-a[1]);}
   }
   if(layers.cloud){
     c.globalAlpha=1;const ds=DATA.filter(d=>d.tcc);
-    if(ds.length)for(const d of ds)drawGrid(c,d,'tcc',v=>`rgba(95,130,190,${(Math.max(0,Math.min(1,v))*.8).toFixed(2)})`);
+    if(ds.length)drawSets(c,'tcc',v=>`rgba(95,130,190,${(Math.max(0,Math.min(1,v))*.8).toFixed(2)})`);
     else{const a=proj([-180,90]),b=proj([180,-90]);c.imageSmoothingEnabled=true;c.drawImage(demoCloudImage(),a[0],a[1],b[0]-a[0],b[1]-a[1]);}
   }
   if(layers.fire&&window.drawFire)drawFire(c,monthKey());
@@ -113,13 +113,26 @@ function frameOf(d){
   return i;
 }
 function drawGrid(c,d,k,col){
-  const fi=frameOf(d);if(fi==null)return;const arr=d[k][fi],oc=document.createElement('canvas');oc.width=d.nx;oc.height=d.ny;
+  const fi=frameOf(d);if(fi==null)return;const arr=d[k][fi];if(!arr)return;const oc=document.createElement('canvas');oc.width=d.nx;oc.height=d.ny;
   const o=oc.getContext('2d'),img=o.createImageData(d.nx,d.ny);
   for(let n=0;n<arr.length;n++){const v=arr[n];if(v==null||isNaN(v))continue;const q=d3.color(col(v));img.data.set([q.r,q.g,q.b,Math.round((q.opacity??1)*255)],n*4);}
   o.putImageData(img,0,0);
   const hx=Math.abs(d.dlon)/2,hy=Math.abs(d.dlat)/2,lx=Math.min(d.lon0,d.lon0+(d.nx-1)*d.dlon),ty=Math.max(d.lat0,d.lat0+(d.ny-1)*d.dlat);
-  const a=proj([lx-hx,ty+hy]),b=proj([lx+(d.nx-1)*Math.abs(d.dlon)+hx,ty-(d.ny-1)*Math.abs(d.dlat)-hy]);
+  // clamp to ±180 so a world-wide grid does not wrap its left edge to the far right
+  const a=proj([Math.max(-180,lx-hx),ty+hy]),b=proj([Math.min(180,lx+(d.nx-1)*Math.abs(d.dlon)+hx),ty-(d.ny-1)*Math.abs(d.dlat)-hy]);
   c.imageSmoothingEnabled=true;c.drawImage(oc,a[0],a[1],b[0]-a[0],b[1]-a[1]);
+}
+const isCoarse=d=>Math.abs(d.dlon)>=1.5;
+function gridBox(d){const hx=Math.abs(d.dlon)/2,hy=Math.abs(d.dlat)/2,lo=[d.lon0,d.lon0+(d.nx-1)*d.dlon].sort((x,y)=>x-y),la=[d.lat0,d.lat0+(d.ny-1)*d.dlat].sort((x,y)=>x-y);
+  const a=proj([Math.max(-180,lo[0]-hx),la[1]+hy]),b=proj([Math.min(180,lo[1]+hx),la[0]-hy]);return[a[0],a[1],b[0]-a[0],b[1]-a[1]];}
+// Draw the world-wide 2° grid first, with the fine 0.5° study areas cut out of it, then the fine grids on top.
+function drawSets(c,k,col){
+  const ds=DATA.filter(d=>d[k]),fine=ds.filter(d=>!isCoarse(d));
+  for(const d of ds.filter(isCoarse)){
+    if(!fine.length){drawGrid(c,d,k,col);continue;}
+    c.save();const p=new Path2D(),w=gridBox(d);p.rect(...w);for(const f of fine)p.rect(...gridBox(f));c.clip(p,'evenodd');drawGrid(c,d,k,col);c.restore();
+  }
+  for(const d of fine)drawGrid(c,d,k,col);
 }
 // Study areas and the latitude band they share, drawn on the top canvas so they stay readable.
 const ZONE_COLOR='#ffa51f'; // one orange for study-area names and frames
@@ -203,6 +216,8 @@ let P=[];
 function view(){
   const a=proj.invert(T.invert([0,0])),b=proj.invert(T.invert([W,H]));
   let w=Math.max(-180,a[0]),e=Math.min(180,b[0]),n=Math.min(85,a[1]),s=Math.max(-85,b[1]);
+  // with the world-wide ERA5 grid loaded, particles can start anywhere it covers (80° N – 80° S)
+  if(DATA.some(d=>d.region==='global')){n=Math.min(n,80);s=Math.max(s,-80);return w<e&&s<n?[w,s,e,n]:null;}
   if(DATA.length){const d=DATA[Math.floor(Math.random()*DATA.length)],lo=[d.lon0,d.lon0+(d.nx-1)*d.dlon].sort((x,y)=>x-y),la=[d.lat0,d.lat0+(d.ny-1)*d.dlat].sort((x,y)=>x-y);
     w=Math.max(w,lo[0]);e=Math.min(e,lo[1]);s=Math.max(s,la[0]);n=Math.min(n,la[1]);if(w>=e||s>=n)return null;}
   return[w,s,e,n];
@@ -282,7 +297,7 @@ document.querySelectorAll('#layers button').forEach(b=>b.onclick=()=>{layers[b.d
 function updNote(){
   // One or two short lines; the full credits open with "Sources".
   const own=DATA.filter(d=>!d.builtin),air=DATA.some(d=>d.builtin),p=[];
-  p.push(air?'Wind: ERA5 (Amazon and Borneo)':'<b>Demo wind</b> (synthetic)');
+  p.push(air?(DATA.some(d=>d.region==='global')?'Wind: ERA5 (world 2°, study areas 0.5°)':'Wind: ERA5 (Amazon and Borneo)'):'<b>Demo wind</b> (synthetic)');
   if(own.length)p.push(`<b>Your files:</b> ${own.map(d=>d.name).join(', ')}`);
   if(layers.sst)p.push('Sea temp: ERA5 anomaly vs 1991–2020');
   if(window.ENSO)p.push('El Niño: NOAA ONI');

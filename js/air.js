@@ -10,6 +10,7 @@ const AIR={sets:{},loading:{},
     for(const key in f.months){
       const i=d.idx[key];if(i==null)continue;
       for(const k in q){
+        if(!f.months[key][k])continue; // the world-wide grid only carries wind, clouds and radiation
         const b=atob(f.months[key][k]),a=new Float32Array(b.length),[sc,off]=q[k],div=k==='tcc'?100:1;
         for(let n=0;n<b.length;n++){const v=(b.charCodeAt(n)<<24)>>24;a[n]=v===-128?NaN:(v*sc+off)/div;}
         d[k][i]=a;

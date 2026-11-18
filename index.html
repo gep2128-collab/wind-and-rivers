@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20">
+<link rel="stylesheet" href="css/style.css?v=22">
 </head>
 <body>
 <div id="stage"><canvas id="cBase"></canvas><canvas id="cRad"></canvas><canvas id="cRiv"></canvas><canvas id="cPart"></canvas><canvas id="cLab"></canvas></div>
@@ -56,10 +56,9 @@
     <b>Sea temperature:</b> ERA5 monthly means, sea surface temperature anomaly vs 1991–2020. Contains modified Copernicus Climate Change Service information, 2026 (CC BY 4.0).
     <b>El Niño:</b> Oceanic Niño Index (ONI) and Niño 1+2 / 3.4 indices, NOAA Climate Prediction Center.
     <b>Rivers and land:</b> Natural Earth 10 m.
-    <b>Wind, clouds, radiation, air temperature, rain and regional climate (Amazon and Borneo):</b> ERA5 monthly averaged reanalysis on single levels, 0.5° grid (Hersbach et al., 2023, doi:10.24381/cds.f17050d7). Generated using Copernicus Climate Change Service information, 2026 (CC BY 4.0); neither the European Commission nor ECMWF is responsible for any use of this information. Regional figures are land-cell averages compared with 1991–2020.
+    <b>Wind, clouds, radiation, air temperature, rain and regional climate:</b> ERA5 monthly averaged reanalysis on single levels, 0.5° grid for the Amazon and Borneo and 2° grid for the rest of the world (80° N – 80° S) (Hersbach et al., 2023, doi:10.24381/cds.f17050d7). Generated using Copernicus Climate Change Service information, 2026 (CC BY 4.0); neither the European Commission nor ECMWF is responsible for any use of this information. Regional figures are land-cell averages compared with 1991–2020.
     <b>Fire hotspots:</b> NASA FIRMS, MODIS Collection 6.1 active fires (doi:10.5067/FIRMS/MODIS/MCD14ML), vegetation fires with confidence ≥ 30 %. We acknowledge the use of data and imagery from LANCE FIRMS operated by NASA's Earth Science Data and Information System (ESDIS).
     <b>Fire CO₂ and burned area:</b> GFED5.1 (van der Werf, Chen et al., doi:10.5281/zenodo.16794692, CC BY 4.0) to 2022. From 2023 the figures are estimates: CO₂ from CAMS Global Fire Assimilation System (GFAS), Copernicus Atmosphere Monitoring Service, scaled to GFED5.1; burned area from FIRMS hotspots.
-    <b>Demo layers:</b> outside the Amazon and Borneo there is no wind data; radiation and clouds there are only drawn from files you load.
     Drag to pan, scroll to zoom.
   </div>
 </div>
@@ -74,9 +73,9 @@
 <script src="data/public/fuego/index.js" onerror="void 0"></script>
 <script src="data/public/fuego_mensual.js" onerror="void 0"></script>
 <script src="data/public/co2_regional.js" onerror="void 0"></script>
-<script src="js/ocean.js?v=20"></script>
-<script src="js/air.js?v=20"></script>
-<script src="js/fire.js?v=20"></script>
-<script src="js/app.js?v=20"></script>
+<script src="js/ocean.js?v=22"></script>
+<script src="js/air.js?v=22"></script>
+<script src="js/fire.js?v=22"></script>
+<script src="js/app.js?v=22"></script>
 </body>
 </html>
