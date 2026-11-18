@@ -132,8 +132,8 @@ function drawZones(){
     const [w,s,e,n]=ZONES[z].b,a=scr(w,n),b=scr(e,s);
     c.strokeStyle=MAGENTA;c.lineWidth=1.1;c.lineCap='round';c.setLineDash([0,3.5]);
     c.beginPath();c.roundRect(a[0],a[1],b[0]-a[0],b[1]-a[1],4);c.stroke();c.setLineDash([]);
-    c.font='bold 12px Arial,sans-serif';c.textBaseline='alphabetic';
-    c.fillStyle=MAGENTA;c.fillText(ZONES[z].name.toUpperCase(),a[0],a[1]-7);
+    c.font='12px Arial,sans-serif';c.textBaseline='alphabetic';
+    c.fillStyle='#000';c.fillText(ZONES[z].name.toUpperCase(),a[0],a[1]-7);
   }
   c.lineCap='butt';
 }
