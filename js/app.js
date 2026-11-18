@@ -300,4 +300,12 @@ stage.addEventListener('mousemove',e=>{
 stage.addEventListener('mouseleave',()=>probe.style.display='none');
 
 addEventListener('resize',()=>{resize();seed();});
-resize();seed();syncUI();ensoSync();updNote();requestAnimationFrame(frame);
+// Shareable views: #t=2015-12&z=amazon&ui=0 opens on that month and region (ui=0 hides the panels)
+function applyHash(){
+  const h=new URLSearchParams(location.hash.slice(1)),t=h.get('t'),z=h.get('z');
+  if(t&&/^\d{4}-\d{2}$/.test(t)){tm=(+t.slice(0,4)-Y0)*12+(+t.slice(5)-1);const ld=lastDataTm();if(ld!=null&&tm>ld)tm=ld;if(tm<0)tm=0;syncUI();drawRad();}
+  document.body.classList.toggle('clean',h.get('ui')==='0');
+  if(z&&(z==='world'||ZONES[z]))flyTo(z);
+}
+addEventListener('hashchange',applyHash);
+resize();seed();syncUI();ensoSync();updNote();applyHash();requestAnimationFrame(frame);
