@@ -9,9 +9,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=22">
+<link rel="stylesheet" href="css/style.css?v=24">
 </head>
 <body>
+<section id="map">
 <div id="stage"><canvas id="cBase"></canvas><canvas id="cRad"></canvas><canvas id="cRiv"></canvas><canvas id="cPart"></canvas><canvas id="cLab"></canvas></div>
 
 <div id="head" class="pan">
@@ -28,6 +29,7 @@
   <button data-z="world" class="on">World</button>
   <button data-z="amazon">Amazon</button>
   <button data-z="borneo">Borneo</button>
+  <a class="btn acc" href="#compare">Compare ↓</a>
 </div>
 
 <div id="ctrl" class="pan">
@@ -59,10 +61,31 @@
     <b>Wind, clouds, radiation, air temperature, rain and regional climate:</b> ERA5 monthly averaged reanalysis on single levels, 0.5° grid for the Amazon and Borneo and 2° grid for the rest of the world (80° N – 80° S) (Hersbach et al., 2023, doi:10.24381/cds.f17050d7). Generated using Copernicus Climate Change Service information, 2026 (CC BY 4.0); neither the European Commission nor ECMWF is responsible for any use of this information. Regional figures are land-cell averages compared with 1991–2020.
     <b>Fire hotspots:</b> NASA FIRMS, MODIS Collection 6.1 active fires (doi:10.5067/FIRMS/MODIS/MCD14ML), vegetation fires with confidence ≥ 30 %. We acknowledge the use of data and imagery from LANCE FIRMS operated by NASA's Earth Science Data and Information System (ESDIS).
     <b>Fire CO₂ and burned area:</b> GFED5.1 (van der Werf, Chen et al., doi:10.5281/zenodo.16794692, CC BY 4.0) to 2022. From 2023 the figures are estimates: CO₂ from CAMS Global Fire Assimilation System (GFAS), Copernicus Atmosphere Monitoring Service, scaled to GFED5.1; burned area from FIRMS hotspots.
-    Drag to pan, scroll to zoom.
+    <b>O₂ and CO₂ uptake (comparison section):</b> MODIS MOD17A3HGF v6.1 net primary production, NASA LP DAAC (doi:10.5067/MODIS/MOD17A3HGF.061).
+    <b>Species:</b> GBIF.org occurrence search, November 2026; threat categories from the IUCN Red List as linked by GBIF.
+    Drag to pan; Ctrl + scroll (or pinch) to zoom.
   </div>
 </div>
 <div id="probe"></div>
+</section>
+
+<section id="compare">
+  <div class="wrap">
+    <div class="kicker">Two forests on the same latitude</div>
+    <h2>Amazon and Borneo compared</h2>
+    <p class="lede">What each study area holds and what El Niño does to it. Choose one to try the fire simulator.</p>
+    <div id="cards" class="cards"></div>
+    <p id="cmpNote" class="fine"></p>
+  </div>
+</section>
+
+<section id="sim">
+  <div class="wrap">
+    <div class="kicker">Fire simulator</div>
+    <h2 id="simTitle">Choose a study area above</h2>
+    <p id="simText" class="lede">Click a point on the map to start a fire and watch it spread with the season, wind and drought of the month you pick.</p>
+  </div>
+</section>
 
 <script src="data/land.js"></script>
 <script src="data/rivers.js"></script>
@@ -73,9 +96,12 @@
 <script src="data/public/fuego/index.js" onerror="void 0"></script>
 <script src="data/public/fuego_mensual.js" onerror="void 0"></script>
 <script src="data/public/co2_regional.js" onerror="void 0"></script>
-<script src="js/ocean.js?v=22"></script>
-<script src="js/air.js?v=22"></script>
-<script src="js/fire.js?v=22"></script>
-<script src="js/app.js?v=22"></script>
+<script src="data/public/especies.js" onerror="void 0"></script>
+<script src="data/public/oxigeno.js" onerror="void 0"></script>
+<script src="js/ocean.js?v=24"></script>
+<script src="js/air.js?v=24"></script>
+<script src="js/fire.js?v=24"></script>
+<script src="js/app.js?v=24"></script>
+<script src="js/compare.js?v=24"></script>
 </body>
 </html>

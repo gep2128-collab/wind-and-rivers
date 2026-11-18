@@ -1,10 +1,13 @@
 :root{--ink:#ecebe6;--mut:#9c9a92;--acc:#eb6834;--pan:rgba(14,14,14,.82);--bd:rgba(255,255,255,.14)}
 *{box-sizing:border-box}
-html,body{font-variant-numeric:tabular-nums;margin:0;height:100%;background:#000;color:var(--ink);font-family:Arimo,Arial,sans-serif;overflow:hidden}
-#stage{position:fixed;inset:0;cursor:grab}
+html{scroll-behavior:smooth}
+html,body{font-variant-numeric:tabular-nums;margin:0;background:#000;color:var(--ink);font-family:Arimo,Arial,sans-serif;overflow-x:hidden}
+/* first screen: the map; the page scrolls down to the comparison and the simulator */
+#map{position:relative;height:100vh;height:100dvh;overflow:hidden}
+#stage{position:absolute;inset:0;cursor:grab;touch-action:pan-y}
 #stage:active{cursor:grabbing}
 #stage canvas{position:absolute;inset:0;width:100%;height:100%}
-.pan{position:fixed;background:var(--pan);border:1px solid var(--bd);border-radius:10px;padding:9px 12px;backdrop-filter:blur(6px)}
+.pan{position:absolute;background:var(--pan);border:1px solid var(--bd);border-radius:10px;padding:9px 12px;backdrop-filter:blur(6px)}
 #head{top:16px;left:16px;padding:11px 14px}
 #head h1{font-family:Arimo,Arial,sans-serif;font-size:20px;font-weight:bold;margin:0;line-height:1.2}
 #head .subt{font-size:12px;font-weight:normal;color:var(--ink);margin-top:2px;white-space:nowrap}
@@ -43,3 +46,30 @@ body.clean .pan{display:none!important}
 @media (max-width:760px){#enso{grid-template-columns:1fr}}
 @media (max-width:760px){#ctrl{grid-template-columns:1fr;left:8px;right:8px;bottom:8px}#head{top:8px;left:8px}#head h1{font-size:16px}#head .subt{font-size:9.5px}#date{font-size:18px}#zoom{top:auto;bottom:auto;right:auto;left:8px;top:122px;flex-direction:row}}
 #climaNow,#fireNow{font:11px Arimo,Arial,sans-serif;color:var(--mut);margin-top:4px;line-height:1.45}#climaNow b,#fireNow b{color:#ecebe6}#climaNow .warm{color:#ef8a62}#climaNow .cool{color:#67a9cf}#climaNow .mut{font-size:10px;opacity:.8}
+
+a.btn{font:500 11px Arimo,Arial,sans-serif;color:var(--ink);border:1px solid var(--bd);border-radius:6px;padding:4px 9px;text-decoration:none;display:inline-block}
+a.btn.acc{border-color:#ffa51f;color:#ffa51f}a.btn:hover{background:rgba(255,255,255,.08)}
+/* ---- comparison and simulator sections ---- */
+#compare,#sim{background:#0b0b0c;border-top:1px solid var(--bd);padding:56px 16px}
+.wrap{max-width:1120px;margin:0 auto}
+.kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+#compare h2,#sim h2{font-size:30px;margin:6px 0 8px}
+.lede{color:var(--mut);font-size:14px;line-height:1.5;margin:0 0 24px;max-width:640px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:#141416;border:1px solid var(--bd);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:16px}
+.card h3{margin:0;font-size:22px;color:#ffa51f;letter-spacing:.06em}
+.card .where{font-size:12px;color:var(--mut);margin-top:2px}
+.grp .gt{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px}
+.stat b{display:block;font-size:26px;line-height:1.1}
+.stat span{display:block;font-size:12px;color:var(--mut);line-height:1.35;margin-top:2px}
+.stat .red{color:#ff7a6e}.stat .cyan{color:#8eefff}.stat .org{color:#ffa51f}
+.life{width:100%;border-collapse:collapse;font-size:13px}
+.life td{padding:5px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.life td:nth-child(2),.life td:nth-child(3){text-align:right}
+.life .thr{color:#ff7a6e}
+.card button.go{margin-top:auto;font-size:13px;padding:10px 14px;border-color:#ffa51f;color:#ffa51f}
+.card button.go:hover{background:#ffa51f;color:#000}
+.fine{font-size:11px;color:var(--mut);line-height:1.5;margin-top:16px}
+@media (max-width:760px){.cards{grid-template-columns:1fr}#compare h2,#sim h2{font-size:24px}}
+#sim{min-height:70vh}

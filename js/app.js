@@ -264,9 +264,11 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 
-const zoom=d3.zoom().scaleExtent([1,60]).on('zoom',e=>{T=e.transform;redrawStatic();
+// Plain scroll moves the page down to the comparison; Ctrl + scroll (or a trackpad pinch) zooms the map.
+// On touch screens one finger scrolls the page and two fingers pan and zoom the map.
+const zoom=d3.zoom().scaleExtent([1,60]).filter(e=>e.type==='wheel'?(e.ctrlKey||e.metaKey):e.type.startsWith('touch')?(e.touches&&e.touches.length>1):!e.button).on('zoom',e=>{T=e.transform;redrawStatic();
   document.querySelectorAll('#zoom button').forEach(b=>b.classList.remove('on'));});
-d3.select(stage).call(zoom).on('dblclick.zoom',null);
+d3.select(stage).call(zoom).on('dblclick.zoom',null);d3.select(stage).style('touch-action','pan-y');
 function flyTo(z){
   let t=d3.zoomIdentity;
   if(z!=='world'){const [w,s,e,n]=ZONES[z].b,a=proj([w,n]),b=proj([e,s]);
@@ -328,7 +330,7 @@ file.onchange=async e=>{
 };
 
 stage.addEventListener('mousemove',e=>{
-  const ll=proj.invert(T.invert([e.clientX,e.clientY]));if(!ll||Math.abs(ll[1])>90){probe.style.display='none';return;}
+  const ll=proj.invert(T.invert([e.clientX-stage.getBoundingClientRect().left,e.clientY-stage.getBoundingClientRect().top]));if(!ll||Math.abs(ll[1])>90){probe.style.display='none';return;}
   const w=windAt(ll[0],ll[1],tau);
   probe.style.display='block';probe.style.left=(e.clientX+14)+'px';probe.style.top=(e.clientY+14)+'px';
   let s=`${Math.abs(ll[1]).toFixed(2)}°${ll[1]<0?'S':'N'} ${Math.abs(ll[0]).toFixed(2)}°${ll[0]<0?'W':'E'}`;

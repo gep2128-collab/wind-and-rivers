@@ -107,3 +107,16 @@ The source links are in the Spanish tables above.
 - **Official ICEN (IGP):** link did not respond; computed from ERSST instead and checked against ENFEN statements.
 - **Lima and coastal impacts (SENAMHI, PISCO, DesInventar, ANA):** out of scope; the project focuses on the Amazon and Borneo.
 - **BIEN, WDPA:** not needed for v1.
+
+---
+
+## Actualización · Update (18 nov 2026, tarde)
+
+| Dato | Fuente | Para qué | Script / archivo | Estado |
+|---|---|---|---|---|
+| Viento, nubes y radiación de todo el mundo, 2° | ERA5 mensual (Copernicus, CC BY 4.0) | Capas del mapa mundial (antes solo en las zonas de estudio) | `scripts/fase2_global.py` → `data/public/era5/global_YYYY.js` (~0.9 MB/año) | ✅ |
+| CO₂ de incendios y área quemada mensual | GFED5.1 hasta 2022 + CAMS GFAS escalado desde 2023 | Recuadros comparativos | `scripts/fase3_gfed.py` → `data/public/co2_regional.js` | ✅ / ⏳ ver recuadros |
+| O₂ liberado y CO₂ absorbido al año | MODIS MOD17A3HGF v6.1 (NPP, NASA) — 2015, 2022, 2023 | Recuadros comparativos (pregunta 1) | `scripts/fase5_oxigeno.py` → `data/public/oxigeno.js` | ✅ / ⏳ |
+| Especies registradas y % amenazado | GBIF.org (búsqueda por polígono) + categorías de la Lista Roja UICN que GBIF asocia | Recuadros comparativos | `scripts/fase5_especies.py` → `data/public/especies.js` | ✅ |
+
+*Update: world-wide ERA5 at 2° for wind, clouds and radiation; fire CO₂ (GFED5.1/GFAS); yearly O₂ and CO₂ uptake from MODIS NPP; species counts per study area from GBIF with IUCN threat categories. They feed the new "Amazon and Borneo compared" section below the map.*
