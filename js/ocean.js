@@ -66,7 +66,7 @@ const fmt=v=>v==null?'—':(v>0?'+':'')+v.toFixed(2);
 const ensoC=document.getElementById('ensoC');
 function drawEnso(){
   if(!window.ENSO||!ensoC)return;
-  const h=56,w=ensoC.clientWidth,r=Math.min(2,devicePixelRatio||1);ensoC.style.height=h+'px';
+  const h=44,w=ensoC.clientWidth,r=Math.min(2,devicePixelRatio||1);ensoC.style.height=h+'px';
   if(ensoC.width!==Math.round(w*r)||ensoC.height!==h*r){ensoC.width=Math.round(w*r);ensoC.height=h*r;}
   const c=ensoC.getContext('2d');c.setTransform(r,0,0,r,0,0);c.clearRect(0,0,w,h);
   const y0=+ENSO.months[0].slice(0,4),n=(+ENSO.months[ENSO.months.length-1].slice(0,4)-y0+1)*12,bw=w/n,mid=h/2-6,sc=(h/2-10)/2.6;

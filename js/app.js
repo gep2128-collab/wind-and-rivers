@@ -223,17 +223,19 @@ play.onclick=()=>{playing=!playing;play.textContent=playing?'❚❚ Pause':'▶ 
 document.querySelectorAll('#layers button').forEach(b=>b.onclick=()=>{layers[b.dataset.l]=!layers[b.dataset.l];b.classList.toggle('on',layers[b.dataset.l]);redrawStatic();updNote();});
 
 function updNote(){
-  const real=DATA.length>0;
-  let s=real?`<b>Data loaded:</b> ${DATA.map(d=>d.name).join(', ')}. `:'<b>Demo mode.</b> The wind is a synthetic field (trade winds, an ITCZ that shifts by month, the Asian monsoon, the South American low-level jet), not measurements. Load a JSON converted from ERA5 to see real data. ';
-  s+='Rivers: Natural Earth 10m, flow animated toward the river mouth. ';
-  if(layers.sst)s+=`Sea temperature: monthly anomaly vs ${window.SST_INFO?SST_INFO.clim:'1991–2020'} from ERA5 (contains modified Copernicus Climate Change Service information, 2026); red = warmer than normal, blue = colder. El Niño bar: Oceanic Niño Index (ONI) and Niño 1+2, NOAA CPC. `;
-  if(layers.rad)s+=DATA.some(d=>d.ssrd)?'Radiation: ERA5 surface solar radiation (W/m²). ':'Radiation: top-of-atmosphere insolation calculated from orbital geometry (W/m²); surface radiation requires ERA5 or CERES. ';
-  if(layers.cloud)s+=DATA.some(d=>d.tcc)?'Clouds: ERA5 total cloud cover. ':'Clouds: synthetic cloud cover (demo), not measurements; load a JSON that includes tcc for real clouds. ';
-  s+='Drag to pan, scroll to zoom.';
-  note.innerHTML=s;
-  legend.innerHTML=(layers.sst?'<div>Sea temp anomaly °C</div><div class="bar sb"></div><div style="display:flex;justify-content:space-between;width:160px"><span>−3</span><span>0</span><span>+3</span></div>':'')+(layers.wind?'<div>Wind m/s</div><div class="bar"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0</span><span>6</span><span>12+</span></div>':'')
-    +(layers.rad?'<div style="margin-top:4px">Radiation W/m²</div><div class="bar rb"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0</span><span>'+(DATA.some(d=>d.ssrd)?'320':'560')+'</span></div>':'')
-    +(layers.cloud?'<div style="margin-top:4px">Cloud cover</div><div style="height:8px;width:160px;border-radius:2px;background:linear-gradient(90deg,rgba(95,130,190,0),rgba(95,130,190,.8))"></div><div style="display:flex;justify-content:space-between;width:160px"><span>0%</span><span>100%</span></div>':'');
+  // One or two short lines; the full credits open with "Sources".
+  const real=DATA.length>0,p=[];
+  p.push(real?`<b>Data:</b> ${DATA.map(d=>d.name).join(', ')}`:'<b>Demo wind</b> (synthetic)');
+  if(layers.sst)p.push('Sea temp: ERA5 anomaly vs 1991–2020');
+  if(window.ENSO)p.push('El Niño: NOAA ONI');
+  if(layers.rivers)p.push('Rivers: Natural Earth');
+  if(layers.rad)p.push(DATA.some(d=>d.ssrd)?'Radiation: ERA5':'Radiation: calculated (demo)');
+  if(layers.cloud)p.push(DATA.some(d=>d.tcc)?'Clouds: ERA5':'Clouds: synthetic (demo)');
+  note.innerHTML=p.join(' · ')+' · <a href="#" id="srcBtn">Sources</a>';
+  srcBtn.onclick=e=>{e.preventDefault();credits.hidden=!credits.hidden;};
+  legend.innerHTML=(layers.sst?'<div>Sea temp anomaly °C</div><div class="bar sb"></div><div style="display:flex;justify-content:space-between;width:120px"><span>−3</span><span>0</span><span>+3</span></div>':'')+(layers.wind?'<div>Wind m/s</div><div class="bar"></div><div style="display:flex;justify-content:space-between;width:120px"><span>0</span><span>6</span><span>12+</span></div>':'')
+    +(layers.rad?'<div style="margin-top:4px">Radiation W/m²</div><div class="bar rb"></div><div style="display:flex;justify-content:space-between;width:120px"><span>0</span><span>'+(DATA.some(d=>d.ssrd)?'320':'560')+'</span></div>':'')
+    +(layers.cloud?'<div style="margin-top:4px">Cloud cover</div><div style="height:8px;width:120px;border-radius:2px;background:linear-gradient(90deg,rgba(95,130,190,0),rgba(95,130,190,.8))"></div><div style="display:flex;justify-content:space-between;width:120px"><span>0%</span><span>100%</span></div>':'');
 }
 file.onchange=async e=>{
   for(const f of e.target.files){

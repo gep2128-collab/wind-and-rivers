@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 <div id="stage"><canvas id="cBase"></canvas><canvas id="cRad"></canvas><canvas id="cRiv"></canvas><canvas id="cPart"></canvas></div>
@@ -45,6 +45,13 @@
   </div>
   <div id="enso"><span>El Niño index (ONI)</span><canvas id="ensoC"></canvas></div>
   <div id="note"></div>
+  <div id="credits" hidden>
+    <b>Sea temperature:</b> ERA5 monthly means, sea surface temperature anomaly vs 1991–2020. Contains modified Copernicus Climate Change Service information, 2026 (CC BY 4.0).
+    <b>El Niño:</b> Oceanic Niño Index (ONI) and Niño 1+2 / 3.4 indices, NOAA Climate Prediction Center.
+    <b>Rivers and land:</b> Natural Earth 10 m.
+    <b>Demo layers:</b> without loaded ERA5 files, wind and clouds are synthetic fields and radiation is calculated from the Sun's position; they are not measurements.
+    Drag to pan, scroll to zoom.
+  </div>
 </div>
 <div id="probe"></div>
 
@@ -52,7 +59,7 @@
 <script src="data/rivers.js"></script>
 <script src="data/public/enso.js"></script>
 <script src="data/public/sst/index.js" onerror="void 0"></script>
-<script src="js/ocean.js?v=4"></script>
-<script src="js/app.js?v=4"></script>
+<script src="js/ocean.js?v=5"></script>
+<script src="js/app.js?v=5"></script>
 </body>
 </html>
