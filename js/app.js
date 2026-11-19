@@ -272,7 +272,8 @@ d3.select(stage).call(zoom).on('dblclick.zoom',null);d3.select(stage).style('tou
 function flyTo(z){
   let t=d3.zoomIdentity;
   if(z!=='world'){const [w,s,e,n]=ZONES[z].b,a=proj([w,n]),b=proj([e,s]);
-    const top=40,bot=H-(W<760?270:150),k=.9*Math.min(W/(b[0]-a[0]),(bot-top)/(b[1]-a[1]));t=d3.zoomIdentity.translate(W/2-k*(a[0]+b[0])/2,(top+bot)/2-k*(a[1]+b[1])/2).scale(k);}
+    // leave room for the panels, unless they are hidden (ui=0)
+    const top=40,bot=H-(document.body.classList.contains('clean')?40:W<760?270:150),k=.9*Math.min(W/(b[0]-a[0]),(bot-top)/(b[1]-a[1]));t=d3.zoomIdentity.translate(W/2-k*(a[0]+b[0])/2,(top+bot)/2-k*(a[1]+b[1])/2).scale(k);}
   d3.select(stage).transition().duration(1600).ease(d3.easeCubicInOut).call(zoom.transform,t)
     .on('end',()=>document.querySelector(`#zoom [data-z=${z}]`).classList.add('on'));
 }
@@ -345,9 +346,12 @@ stage.addEventListener('mousemove',e=>{
 stage.addEventListener('mouseleave',()=>probe.style.display='none');
 
 addEventListener('resize',()=>{resize();seed();});
-// Shareable views: #t=2015-12&z=amazon&ui=0 opens on that month and region (ui=0 hides the panels)
+// Shareable views: #t=2015-12&z=amazon&ui=0 opens on that month and region (ui=0 hides the panels).
+// l=sst,fire picks the layers to show (l= with nothing shows none); without l the layers stay as they are.
 function applyHash(){
   const h=new URLSearchParams(location.hash.slice(1)),t=h.get('t'),z=h.get('z');
+  if(h.has('l')){const on=h.get('l').split(',');for(const k in layers)layers[k]=on.includes(k);
+    document.querySelectorAll('#layers button').forEach(b=>b.classList.toggle('on',layers[b.dataset.l]));redrawStatic();updNote();}
   if(t&&/^\d{4}-\d{2}$/.test(t)){tm=(+t.slice(0,4)-Y0)*12+(+t.slice(5)-1);const ld=lastDataTm();if(ld!=null&&tm>ld)tm=ld;if(tm<0)tm=0;syncUI();drawRad();}
   document.body.classList.toggle('clean',h.get('ui')==='0');
   if(z&&(z==='world'||ZONES[z]))flyTo(z);
