@@ -55,12 +55,15 @@ function stake(r){const E=ESPECIES.regions[r],up=OXIGENO.regions[r]['2022'].co2_
   const sum=k=>Y[k].reduce((a,b)=>a+b,0),worst=full.reduce((a,k)=>sum(k)>sum(a)?k:a,full[0]),last=CO2.months.at(-1).slice(0,4);
   return{mam:E.mammals.threatened_pct,amp:E.amphibians.threatened_pct,worst:+(100*sum(worst)/up).toFixed(1),worstY:worst,ytd:Y[last]&&Y[last].length<12?+(100*sum(last)/up).toFixed(1):null,last,to:MES[+CO2.months.at(-1).slice(5)-1]};}
 function stakeChart(){
-  const a=stake('amazon'),b=stake('borneo'),rows=[['Mammal species threatened',a.mam,b.mam],['Amphibian species threatened',a.amp,b.amp],
-    [`Fire CO₂ in the worst year, % of a year's uptake (Amazon ${a.worstY}, Borneo ${b.worstY})`,a.worst,b.worst]];
-  if(b.ytd!=null)rows.push([`Fire CO₂ ${b.last} to ${b.to} (estimate), % of a year's uptake`,a.ytd,b.ytd]);
-  const W=360,rh=50,bw=W-56,mx=Math.max(...rows.flatMap(r=>[r[1],r[2]]))*1.05;let s='';
-  rows.forEach(([lab,x,y],i)=>{const t=i*rh;s+=text(0,t+11,lab,C.mut)+rect(0,t+17,x/mx*bw,9,C.grey)+text(x/mx*bw+6,t+25,x+'%',C.ink)+rect(0,t+30,y/mx*bw,9,C.org)+text(y/mx*bw+6,t+38,y+'%',C.org,'b');});
-  return svg(W,rows.length*rh,s)+keys([[C.grey,'Amazon'],[C.org,'Borneo']]);
+  // each row: icon for what the number is about, label, Amazon value, Borneo value
+  const a=stake('amazon'),b=stake('borneo'),rows=[['mammal','Mammal species threatened',a.mam,b.mam],['amphibian','Amphibian species threatened',a.amp,b.amp],
+    ['cloud',"Fire CO₂ in the worst year, % of a year's uptake",a.worst,b.worst]];
+  if(b.ytd!=null)rows.push(['cloud',`Fire CO₂ ${b.last} to ${b.to} (estimate), % of a year's uptake`,a.ytd,b.ytd]);
+  const W=360,rh=54,bw=W-80,ix=24,mx=Math.max(...rows.flatMap(r=>[r[2],r[3]]))*1.05;let s='';
+  rows.forEach(([ic,lab,x,y],i)=>{const t=i*rh;
+    s+=`<path d="${ICONS[ic]}" fill="${C.ink}" fill-rule="evenodd" transform="translate(0 ${t+14}) scale(.75)"/>`;
+    s+=text(ix,t+11,lab,C.mut)+rect(ix,t+18,x/mx*bw,9,C.grey)+text(ix+x/mx*bw+6,t+26,x+'%',C.ink)+rect(ix,t+31,y/mx*bw,9,C.org)+text(ix+y/mx*bw+6,t+39,y+'%',C.org,'b');});
+  return svg(W,rows.length*rh,s)+keys([[C.grey,'Amazon'],[C.org,'Borneo']])+`<p class="note">Worst fire year: Amazon ${a.worstY}, Borneo ${b.worstY}.</p>`;
 }
 function keys(k){return `<div class="keys">${k.map(([c,l])=>`<span style="--c:${c}">${l}</span>`).join('')}</div>`;}
 function nino12(m){return ENSO.nino12[ENSO.months.indexOf(m)];}

@@ -170,21 +170,25 @@ function drawZones(){
 // its hotspots (FIRMS), its fire CO₂ as a share of what the forest takes up in a year (GFED5.1 / CAMS GFAS, MODIS NPP)
 // and the share of mammal species threatened (GBIF + IUCN categories).
 function stakeLines(r){
-  const y=FIRE_YEAR[r],out=[`${ZONES[r].name.toUpperCase()} · FIRES OF ${y||''}`];
-  if(y&&window.FUEGO){let n=0;FUEGO.months.forEach((m,i)=>{if(m.startsWith(y+'-'))n+=FUEGO.regions[r].hotspots[i]||0;});out.push(`${n.toLocaleString('en')} fire hotspots`);}
+  const y=FIRE_YEAR[r],out=[['',`${ZONES[r].name.toUpperCase()} · FIRES OF ${y||''}`]];
+  if(y&&window.FUEGO){let n=0;FUEGO.months.forEach((m,i)=>{if(m.startsWith(y+'-'))n+=FUEGO.regions[r].hotspots[i]||0;});out.push(['flame',`${n.toLocaleString('en')} fire hotspots`]);}
   if(y&&window.CO2&&window.OXIGENO){let v=0,k=0;CO2.months.forEach((m,i)=>{if(m.startsWith(y+'-')&&CO2.regions[r].co2_mt[i]!=null){v+=CO2.regions[r].co2_mt[i];k++;}});
-    const up=OXIGENO.regions[r]['2022'].co2_uptake_mt;if(k)out.push(`fire CO₂ = ${(100*v/up).toFixed(1)}% of a year's uptake`);}
-  if(window.ESPECIES)out.push(`${ESPECIES.regions[r].mammals.threatened_pct}% of mammal species threatened`);
+    const up=OXIGENO.regions[r]['2022'].co2_uptake_mt;if(k)out.push(['cloud',`fire CO₂ = ${(100*v/up).toFixed(1)}% of a year's uptake`]);}
+  if(window.ESPECIES)out.push(['mammal',`${ESPECIES.regions[r].mammals.threatened_pct}% of mammal species threatened`]);
   return out;
 }
 function drawStake(c){
+  // icon for each line (js/icons.js): flame = hotspots, cloud = fire CO₂, paw = mammals
+  const ico=window.ICONS?Object.fromEntries(Object.entries(ICONS).map(([k,d])=>[k,new Path2D(d)])):{},IW=14,font=b=>(b?'bold ':'')+'12px Arimo,Arial,sans-serif';
   c.textBaseline='top';
   for(const r in ZONES){
     const [w,s,e,n]=ZONES[r].b,a=scr(w,n),b=scr(e,s),L=stakeLines(r);
-    c.font='bold 12px Arimo,Arial,sans-serif';const tw=Math.max(...L.map((t,i)=>(c.font=(i?'':'bold ')+'12px Arimo,Arial,sans-serif',c.measureText(t).width)))+20;
-    const h=L.length*17+12,x=Math.max(6,Math.min(W-tw-6,a[0])),y=Math.min(H-h-6,b[1]+8);
+    const tw=Math.max(...L.map(([k,t],i)=>{c.font=font(!i);return c.measureText(t).width+(k?IW+6:0);}))+20;
+    const h=L.length*18+12,x=Math.max(6,Math.min(W-tw-6,a[0])),y=Math.min(H-h-6,b[1]+8);
     c.fillStyle='rgba(11,11,12,.88)';c.strokeStyle=ZONE_COLOR;c.lineWidth=1;c.beginPath();c.roundRect(x,y,tw,h,6);c.fill();c.stroke();
-    L.forEach((t,i)=>{c.font=(i?'':'bold ')+'12px Arimo,Arial,sans-serif';c.fillStyle=i?'#ecebe6':ZONE_COLOR;c.fillText(t,x+10,y+8+i*17);});
+    L.forEach(([k,t],i)=>{const ly=y+8+i*18;let tx=x+10;
+      if(k&&ico[k]){c.save();c.translate(tx,ly-1);c.scale(IW/24,IW/24);c.fillStyle=ZONE_COLOR;c.fill(ico[k],'evenodd');c.restore();tx+=IW+6;}
+      c.font=font(!i);c.fillStyle=i?'#ecebe6':ZONE_COLOR;c.fillText(t,tx,ly);});
   }
   c.textBaseline='alphabetic';
 }
