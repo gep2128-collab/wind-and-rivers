@@ -79,7 +79,201 @@
   </div>
 </section>
 
+<section id="frontier">
+  <div class="wrap">
+    <div class="kicker">Beyond El Niño</div>
+    <h2>The Human-Made Fire Frontier</h2>
+
+    <p class="lede">
+      El Niño creates conditions for fire, but climate alone
+      cannot explain why forests burn.
+    </p>
+
+    <p>
+      Across the Amazon and Borneo, forest conversion,
+      agricultural expansion, logging, and infrastructure
+      development reshape landscapes and their vulnerability
+      to wildfire.
+    </p>
+
+    <p>
+      Drought and wind influence how fires spread, while
+      land-use practices, ignition sources, and governance
+      shape where fires begin and how they are managed.
+    </p>
+
+    <p>
+      Comparing these regions requires looking beyond
+      climate anomalies to the political and economic
+      processes transforming tropical forests.
+    </p>
+    
+<h3>Two Forests, Different Fire Frontiers</h3>
+
+<div class="frontier-chart">
+  <div class="kicker">Beyond El Niño · 2005–2025</div>
+  <h3>Does El Niño Explain the Fires?</h3>
+  <p class="lede">
+    Explore how the Oceanic Niño Index (ONI) relates to
+    satellite-detected fire hotspots in the Amazon and Borneo.
+    Temporal association does not establish causation.
+  </p>
+
+  <div id="enso-fire-chart"></div>
+
+  <p class="fine">
+    Sources: NOAA Climate Prediction Center (ONI);
+    NASA FIRMS MODIS Collection 6.1 (fire hotspots).
+    Regional hotspot counts are not normalized by area.
+  </p>
+</div>
+    
+<p class="fine">
+  The 2015 El Niño event coincided with substantial fire
+  activity in both the Amazon and Borneo. Yet the timing
+  and magnitude of hotspot detections differed across
+  the two regions. These observations suggest that
+  climate variability alone is insufficient to describe
+  regional fire dynamics. Land-use change, ignition
+  practices, vegetation, and governance are therefore
+  important factors for further investigation.
+  This comparison is exploratory and does not establish
+  causal relationships.
+</p>
+
+
+<table class="frontier-table">
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>Amazon</th>
+      <th>Borneo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Climate</td>
+      <td>Seasonal drought and ENSO-related variability</td>
+      <td>ENSO-related drought and peatland drying</td>
+    </tr>
+    <tr>
+      <td>Land transformation</td>
+      <td>Cattle ranching, agricultural expansion, and logging</td>
+      <td>Oil palm, timber plantations, logging, and peat drainage</td>
+    </tr>
+    <tr>
+      <td>Human ignition</td>
+      <td>Land clearing, agricultural burning, and accidental fires</td>
+      <td>Land preparation fires and accidental ignition</td>
+    </tr>
+    <tr>
+      <td>Research question</td>
+      <td>How does land conversion change fire vulnerability?</td>
+      <td>How does peat drainage change fire vulnerability?</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="fine">
+  Exploratory comparative framework. These are general
+  regional patterns and research questions, not findings
+  established by the current simulation.
+</p>
+
+<figure class="frontier-map">
+  <img
+    src="docs/borneo-land-transformation.png"
+    alt="Map of Borneo showing industrial plantations, mining and forest cover"
+    style="width:100%;height:auto;"
+  >
+
+  <figcaption class="fine">
+    Borneo's transformed landscape: industrial plantations,
+    mining and forest cover. Screenshot from Nusantara Atlas
+    (TheTreeMap), accessed November 2026.
+    Layer dates vary from 2020 to 2025.
+    Shown as a research reference, not a causal analysis
+    of wildfire occurrence.
+  </figcaption>
+</figure>
+    
+
+<div class="frontier-chart">
+  <div class="kicker">Fire activity · Borneo · 2005–2025</div>
+  <h3>When Do Fires Intensify?</h3>
+
+  <p class="lede">
+    Explore monthly satellite-detected fire hotspots
+    in Borneo from 2005 to 2025. Compare seasonal fire
+    activity across years, including periods associated
+    with El Niño and non-El Niño conditions.
+  </p>
+
+  <div id="borneo-fire-chart"></div>
+
+  <p class="fine">
+    Source: NASA FIRMS, MODIS Collection 6.1.
+    Monthly hotspot counts from the project's existing
+    dataset. Hotspots are satellite detections,
+    not individual fires or burned area.
+  </p>
+</div>
+ 
+<figure class="frontier-map">
+  <img
+    src="docs/amazon-land-transformation.png"
+    alt="Map of land-cover transitions across the Pan-Amazon region between 2005 and 2023"
+    style="width:100%;height:auto;"
+  >
+
+  <figcaption class="fine">
+    Amazon land transformation, 2005–2023.
+    MapBiomas Pan-Amazonia land-cover transitions
+    showing changes between natural vegetation and
+    anthropogenic land uses, including agriculture
+    and pasture. Screenshot accessed November 2026.
+
+    Presented as a research reference, not evidence
+    that land conversion directly caused fire occurrence.
+    Map categories and temporal coverage differ from
+    the Borneo reference map.
+  </figcaption>
+</figure>
+   
+<div class="frontier-chart">
+  <div class="kicker">Fire activity · Amazon · 2005–2025</div>
+  <h3>When Do Fires Intensify?</h3>
+
+  <p class="lede">
+    Explore monthly satellite-detected fire hotspots
+    in the Amazon from 2005 to 2025. Compare seasonal
+    fire activity across years, including periods
+    associated with El Niño and non-El Niño conditions.
+  </p>
+
+  <div id="amazon-fire-chart"></div>
+
+  <p class="fine">
+    Source: NASA FIRMS, MODIS Collection 6.1.
+    Monthly hotspot counts from the project's existing
+    dataset. Hotspots are satellite detections,
+    not individual fires or burned area.
+  </p>
+</div>
+
+
+
+  </div>
+</section>
+
 <section id="sim">
+  
+<p>
+  <a href="frontier-simulation.html">
+    LAUNCH COMPARATIVE FIRE SIMULATION →
+  </a>
+</p>
+
   <div class="wrap">
     <div class="kicker">Fire simulator</div>
     <h2 id="simTitle">Choose a study area above</h2>
@@ -101,6 +295,243 @@
 <script src="js/icons.js?v=4"></script>
 <script src="js/ocean.js?v=24"></script>
 <script src="js/air.js?v=24"></script>
+
+  
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const target = document.getElementById("borneo-fire-chart");
+  const data = window.FUEGO;
+
+  if (!target || !data?.regions?.borneo) return;
+
+  const years = Array.from(
+    { length: 21 },
+    (_, i) => 2005 + i
+  );
+
+  target.innerHTML = `
+    <div class="fire-year-control">
+      <label for="fire-year">Select year:</label>
+      <select id="fire-year">
+        ${years.map(y =>
+          `<option value="${y}" ${y === 2015 ? "selected" : ""}>${y}</option>`
+        ).join("")}
+      </select>
+    </div>
+    <div id="fire-year-bars"></div>
+  `;
+
+  const select = document.getElementById("fire-year");
+  const bars = document.getElementById("fire-year-bars");
+
+  function render(year) {
+    const values = data.months
+      .map((month, i) => ({
+        month,
+        count: data.regions.borneo.hotspots[i]
+      }))
+      .filter(d => d.month.startsWith(year + "-"));
+
+    const max = Math.max(1, ...values.map(d => d.count));
+
+    bars.innerHTML = values.map(d => {
+      const label = new Date(d.month + "-01T00:00:00Z")
+        .toLocaleString("en-US", {
+          month: "short",
+          timeZone: "UTC"
+        });
+
+      const width = (d.count / max) * 100;
+
+      return `
+        <div class="fire-bar-row">
+          <span>${label}</span>
+          <div class="fire-bar-track">
+            <div class="fire-bar" style="width:${width}%"></div>
+          </div>
+          <span>${d.count.toLocaleString("en-US")}</span>
+        </div>
+      `;
+    }).join("");
+  }
+
+  select.addEventListener("change", () => {
+    render(select.value);
+  });
+
+  render("2015");
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const target = document.getElementById("amazon-fire-chart");
+  const data = window.FUEGO;
+
+  if (!target || !data?.regions?.amazon) return;
+
+  const years = Array.from(
+    { length: 21 },
+    (_, i) => 2005 + i
+  );
+
+  target.innerHTML = `
+    <div class="fire-year-control">
+      <label for="amazon-fire-year">Select year:</label>
+      <select id="amazon-fire-year">
+        ${years.map(y =>
+          `<option value="${y}" ${y === 2015 ? "selected" : ""}>${y}</option>`
+        ).join("")}
+      </select>
+    </div>
+    <div id="amazon-fire-year-bars"></div>
+  `;
+
+  const select = document.getElementById("amazon-fire-year");
+  const bars = document.getElementById("amazon-fire-year-bars");
+
+  function render(year) {
+    const values = data.months
+      .map((month, i) => ({
+        month,
+        count: data.regions.amazon.hotspots[i]
+      }))
+      .filter(d => d.month.startsWith(year + "-"));
+
+    const max = Math.max(1, ...values.map(d => d.count));
+
+    bars.innerHTML = values.map(d => {
+      const label = new Date(d.month + "-01T00:00:00Z")
+        .toLocaleString("en-US", {
+          month: "short",
+          timeZone: "UTC"
+        });
+
+      const width = (d.count / max) * 100;
+
+      return `
+        <div class="fire-bar-row">
+          <span>${label}</span>
+          <div class="fire-bar-track">
+            <div class="fire-bar" style="width:${width}%"></div>
+          </div>
+          <span>${d.count.toLocaleString("en-US")}</span>
+        </div>
+      `;
+    }).join("");
+  }
+
+  select.addEventListener("change", () => {
+    render(select.value);
+  });
+
+  render("2015");
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const root = document.getElementById("enso-fire-chart");
+  const enso = window.ENSO;
+  const fire = window.FUEGO;
+
+  if (!root || !enso || !fire) {
+    if (root) root.textContent = "Data unavailable.";
+    return;
+  }
+
+  const months = enso.months;
+  const years = [...new Set(
+    months.filter(m => m <= "2025-12").map(m => m.slice(0, 4))
+  )];
+
+  root.innerHTML = `
+    <label for="enso-fire-year">Select year: </label>
+    <select id="enso-fire-year"></select>
+    <div id="enso-fire-bars"></div>
+  `;
+
+  const select = root.querySelector("#enso-fire-year");
+  const bars = root.querySelector("#enso-fire-bars");
+
+  years.forEach(year => {
+    const option = document.createElement("option");
+    option.value = year;
+    option.textContent = year;
+    select.appendChild(option);
+  });
+
+  const fireIndex = new Map(
+    fire.months.map((month, i) => [month, i])
+  );
+
+  function render(year) {
+    const rows = months
+      .map((month, i) => ({ month, i }))
+      .filter(d => d.month.startsWith(year))
+      .map(d => {
+        const j = fireIndex.get(d.month);
+        return {
+          month: d.month,
+          oni: enso.oni[d.i],
+          amazon: j === undefined ? null :
+            fire.regions.amazon.hotspots[j],
+          borneo: j === undefined ? null :
+            fire.regions.borneo.hotspots[j]
+        };
+      });
+
+    const max = Math.max(
+      1,
+      ...rows.flatMap(d => [d.amazon || 0, d.borneo || 0])
+    );
+
+    bars.innerHTML = `
+      <p class="fine">
+        Monthly ONI and regional hotspot counts.
+        Bars share a scale within the selected year.
+      </p>
+      ${rows.map(d => {
+        const label = d.month.slice(5);
+        const oni = Number.isFinite(d.oni)
+          ? d.oni.toFixed(2) : "N/A";
+        const a = Number.isFinite(d.amazon) ? d.amazon : 0;
+        const b = Number.isFinite(d.borneo) ? d.borneo : 0;
+
+        return `
+          <div style="margin:14px 0;">
+            <strong>${label} · ONI ${oni}°C</strong>
+            <div class="fire-bar-row">
+              <span>Amazon</span>
+              <div class="fire-bar-track">
+                <div class="fire-bar"
+                  style="width:${a / max * 100}%;background:#ffa51f">
+                </div>
+              </div>
+              <span>${a.toLocaleString("en-US")}</span>
+            </div>
+            <div class="fire-bar-row">
+              <span>Borneo</span>
+              <div class="fire-bar-track">
+                <div class="fire-bar"
+                  style="width:${b / max * 100}%;background:#4bb6ad">
+                </div>
+              </div>
+              <span>${b.toLocaleString("en-US")}</span>
+            </div>
+          </div>
+        `;
+      }).join("")}
+    `;
+  }
+
+  select.addEventListener("change", () => render(select.value));
+  render("2015");
+});
+</script>
+
+
 <script src="js/fire.js?v=25"></script>
 <script src="js/app.js?v=28"></script>
 <script src="js/compare.js?v=25"></script>

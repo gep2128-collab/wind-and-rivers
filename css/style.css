@@ -76,3 +76,179 @@ a.btn.acc{border-color:#ffa51f;color:#ffa51f}a.btn:hover{background:rgba(255,255
 .fine{font-size:11px;color:var(--mut);line-height:1.5;margin-top:16px}
 @media (max-width:760px){.cards{grid-template-columns:1fr}#compare h2,#sim h2{font-size:24px}}
 #sim{min-height:70vh}
+
+/* ---- Beyond El Niño: Human-Made Fire Frontier ---- */
+#frontier {
+  background: #111113;
+  border-top: 1px solid var(--bd);
+  padding: 72px 16px;
+}
+
+#frontier h2 {
+  font-size: 30px;
+  margin: 6px 0 16px;
+  color: #ffa51f;
+}
+
+#frontier p {
+  max-width: 760px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--ink);
+  margin: 0 0 20px;
+}
+
+#frontier .lede {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--mut);
+  max-width: 760px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 760px) {
+  #frontier {
+    padding: 48px 16px;
+  }
+
+  #frontier h2 {
+    font-size: 24px;
+  }
+}
+
+
+/* ---- Amazon–Borneo comparative framework ---- */
+
+#frontier h3 {
+  font-size: 20px;
+  color: #ffa51f;
+  margin: 40px 0 20px;
+}
+
+.frontier-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.frontier-table th,
+.frontier-table td {
+  padding: 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--bd);
+}
+
+.frontier-table th {
+  color: #ffa51f;
+  background: #1a1a1c;
+  font-weight: 700;
+}
+
+.frontier-table td:first-child {
+  color: var(--ink);
+  font-weight: 700;
+  width: 22%;
+}
+
+.frontier-table tbody tr:hover {
+  background: rgba(255,255,255,.04);
+}
+
+#frontier p.fine {
+  font-size: 11px;
+  color: var(--mut);
+  margin-top: 12px;
+}
+
+@media (max-width: 760px) {
+  .frontier-table {
+    font-size: 11px;
+  }
+
+  .frontier-table th,
+  .frontier-table td {
+    padding: 10px 6px;
+  }
+}
+
+/* Beyond El Niño — Borneo fire activity chart */
+.frontier-chart {
+  margin: 48px 0;
+  padding: 28px;
+  background: #171717;
+  border: 1px solid #383838;
+  border-radius: 8px;
+}
+
+.frontier-chart h3 {
+  margin: 12px 0 16px;
+}
+
+#borneo-fire-chart {
+  margin-top: 28px;
+}
+
+.fire-bar-row {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 80px;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.fire-bar-row span:last-child {
+  text-align: right;
+}
+
+.fire-bar-track {
+  height: 14px;
+  background: #303030;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.fire-bar {
+  height: 100%;
+  background: #ffa51f;
+  border-radius: 3px;
+}
+
+@media (max-width: 600px) {
+  .frontier-chart {
+    padding: 18px;
+  }
+
+  .fire-bar-row {
+    grid-template-columns: 32px minmax(0, 1fr) 65px;
+    gap: 8px;
+    font-size: 11px;
+  }
+}
+
+/* Fire activity year selector */
+.fire-year-control {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.fire-year-control label {
+  font-size: 13px;
+  color: #aaa;
+}
+
+.fire-year-control select {
+  background: #222;
+  color: #ffa51f;
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
