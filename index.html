@@ -410,6 +410,107 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const root = document.getElementById("enso-fire-chart");
+  const enso = window.ENSO;
+  const fire = window.FUEGO;
+
+  if (!root || !enso || !fire) {
+    if (root) root.textContent = "Data unavailable.";
+    return;
+  }
+
+  const months = enso.months;
+  const years = [...new Set(
+    months.filter(m => m <= "2025-12").map(m => m.slice(0, 4))
+  )];
+
+  root.innerHTML = `
+    <label for="enso-fire-year">Select year: </label>
+    <select id="enso-fire-year"></select>
+    <div id="enso-fire-bars"></div>
+  `;
+
+  const select = root.querySelector("#enso-fire-year");
+  const bars = root.querySelector("#enso-fire-bars");
+
+  years.forEach(year => {
+    const option = document.createElement("option");
+    option.value = year;
+    option.textContent = year;
+    select.appendChild(option);
+  });
+
+  const fireIndex = new Map(
+    fire.months.map((month, i) => [month, i])
+  );
+
+  function render(year) {
+    const rows = months
+      .map((month, i) => ({ month, i }))
+      .filter(d => d.month.startsWith(year))
+      .map(d => {
+        const j = fireIndex.get(d.month);
+        return {
+          month: d.month,
+          oni: enso.oni[d.i],
+          amazon: j === undefined ? null :
+            fire.regions.amazon.hotspots[j],
+          borneo: j === undefined ? null :
+            fire.regions.borneo.hotspots[j]
+        };
+      });
+
+    const max = Math.max(
+      1,
+      ...rows.flatMap(d => [d.amazon || 0, d.borneo || 0])
+    );
+
+    bars.innerHTML = `
+      <p class="fine">
+        Monthly ONI and regional hotspot counts.
+        Bars share a scale within the selected year.
+      </p>
+      ${rows.map(d => {
+        const label = d.month.slice(5);
+        const oni = Number.isFinite(d.oni)
+          ? d.oni.toFixed(2) : "N/A";
+        const a = Number.isFinite(d.amazon) ? d.amazon : 0;
+        const b = Number.isFinite(d.borneo) ? d.borneo : 0;
+
+        return `
+          <div style="margin:14px 0;">
+            <strong>${label} · ONI ${oni}°C</strong>
+            <div class="fire-bar-row">
+              <span>Amazon</span>
+              <div class="fire-bar-track">
+                <div class="fire-bar"
+                  style="width:${a / max * 100}%;background:#ffa51f">
+                </div>
+              </div>
+              <span>${a.toLocaleString("en-US")}</span>
+            </div>
+            <div class="fire-bar-row">
+              <span>Borneo</span>
+              <div class="fire-bar-track">
+                <div class="fire-bar"
+                  style="width:${b / max * 100}%;background:#4bb6ad">
+                </div>
+              </div>
+              <span>${b.toLocaleString("en-US")}</span>
+            </div>
+          </div>
+        `;
+      }).join("")}
+    `;
+  }
+
+  select.addEventListener("change", () => render(select.value));
+  render("2015");
+});
+</script>
+
 
 </body>
 </html>
