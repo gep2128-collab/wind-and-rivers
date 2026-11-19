@@ -112,3 +112,61 @@ a.btn.acc{border-color:#ffa51f;color:#ffa51f}a.btn:hover{background:rgba(255,255
     font-size: 24px;
   }
 }
+
+
+/* ---- Amazon–Borneo comparative framework ---- */
+
+#frontier h3 {
+  font-size: 20px;
+  color: #ffa51f;
+  margin: 40px 0 20px;
+}
+
+.frontier-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.frontier-table th,
+.frontier-table td {
+  padding: 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--bd);
+}
+
+.frontier-table th {
+  color: #ffa51f;
+  background: #1a1a1c;
+  font-weight: 700;
+}
+
+.frontier-table td:first-child {
+  color: var(--ink);
+  font-weight: 700;
+  width: 22%;
+}
+
+.frontier-table tbody tr:hover {
+  background: rgba(255,255,255,.04);
+}
+
+#frontier p.fine {
+  font-size: 11px;
+  color: var(--mut);
+  margin-top: 12px;
+}
+
+@media (max-width: 760px) {
+  .frontier-table {
+    font-size: 11px;
+  }
+
+  .frontier-table th,
+  .frontier-table td {
+    padding: 10px 6px;
+  }
+}
