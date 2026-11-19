@@ -186,6 +186,28 @@
     not individual fires or burned area.
   </p>
 </div>
+    
+<div class="frontier-chart">
+  <div class="kicker">Fire activity · Amazon · 2005–2025</div>
+  <h3>When Do Fires Intensify?</h3>
+
+  <p class="lede">
+    Explore monthly satellite-detected fire hotspots
+    in the Amazon from 2005 to 2025. Compare seasonal
+    fire activity across years, including periods
+    associated with El Niño and non-El Niño conditions.
+  </p>
+
+  <div id="amazon-fire-chart"></div>
+
+  <p class="fine">
+    Source: NASA FIRMS, MODIS Collection 6.1.
+    Monthly hotspot counts from the project's existing
+    dataset. Hotspots are satellite detections,
+    not individual fires or burned area.
+  </p>
+</div>
+
 
 
   </div>
@@ -249,6 +271,72 @@ document.addEventListener("DOMContentLoaded", () => {
       .map((month, i) => ({
         month,
         count: data.regions.borneo.hotspots[i]
+      }))
+      .filter(d => d.month.startsWith(year + "-"));
+
+    const max = Math.max(1, ...values.map(d => d.count));
+
+    bars.innerHTML = values.map(d => {
+      const label = new Date(d.month + "-01T00:00:00Z")
+        .toLocaleString("en-US", {
+          month: "short",
+          timeZone: "UTC"
+        });
+
+      const width = (d.count / max) * 100;
+
+      return `
+        <div class="fire-bar-row">
+          <span>${label}</span>
+          <div class="fire-bar-track">
+            <div class="fire-bar" style="width:${width}%"></div>
+          </div>
+          <span>${d.count.toLocaleString("en-US")}</span>
+        </div>
+      `;
+    }).join("");
+  }
+
+  select.addEventListener("change", () => {
+    render(select.value);
+  });
+
+  render("2015");
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const target = document.getElementById("amazon-fire-chart");
+  const data = window.FUEGO;
+
+  if (!target || !data?.regions?.amazon) return;
+
+  const years = Array.from(
+    { length: 21 },
+    (_, i) => 2005 + i
+  );
+
+  target.innerHTML = `
+    <div class="fire-year-control">
+      <label for="amazon-fire-year">Select year:</label>
+      <select id="amazon-fire-year">
+        ${years.map(y =>
+          `<option value="${y}" ${y === 2015 ? "selected" : ""}>${y}</option>`
+        ).join("")}
+      </select>
+    </div>
+    <div id="amazon-fire-year-bars"></div>
+  `;
+
+  const select = document.getElementById("amazon-fire-year");
+  const bars = document.getElementById("amazon-fire-year-bars");
+
+  function render(year) {
+    const values = data.months
+      .map((month, i) => ({
+        month,
+        count: data.regions.amazon.hotspots[i]
       }))
       .filter(d => d.month.startsWith(year + "-"));
 
