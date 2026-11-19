@@ -170,3 +170,59 @@ a.btn.acc{border-color:#ffa51f;color:#ffa51f}a.btn:hover{background:rgba(255,255
     padding: 10px 6px;
   }
 }
+
+/* Beyond El Niño — Borneo fire activity chart */
+.frontier-chart {
+  margin: 48px 0;
+  padding: 28px;
+  background: #171717;
+  border: 1px solid #383838;
+  border-radius: 8px;
+}
+
+.frontier-chart h3 {
+  margin: 12px 0 16px;
+}
+
+#borneo-fire-chart {
+  margin-top: 28px;
+}
+
+.fire-bar-row {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 80px;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.fire-bar-row span:last-child {
+  text-align: right;
+}
+
+.fire-bar-track {
+  height: 14px;
+  background: #303030;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.fire-bar {
+  height: 100%;
+  background: #ffa51f;
+  border-radius: 3px;
+}
+
+@media (max-width: 600px) {
+  .frontier-chart {
+    padding: 18px;
+  }
+
+  .fire-bar-row {
+    grid-template-columns: 32px minmax(0, 1fr) 65px;
+    gap: 8px;
+    font-size: 11px;
+  }
+}
