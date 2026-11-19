@@ -164,6 +164,26 @@
     of wildfire occurrence.
   </figcaption>
 </figure>
+    
+<div class="frontier-chart">
+  <div class="kicker">Fire activity · Borneo · 2015</div>
+  <h3>When Did Borneo Burn?</h3>
+
+  <p class="lede">
+    Monthly satellite-detected fire hotspots during
+    the 2015 El Niño event.
+  </p>
+
+  <div id="borneo-fire-chart"></div>
+
+  <p class="fine">
+    Source: NASA FIRMS, MODIS Collection 6.1.
+    Monthly hotspot counts from the project's existing
+    dataset. Hotspots are satellite detections,
+    not individual fires or burned area.
+  </p>
+</div>
+
 
   </div>
 </section>
@@ -192,5 +212,44 @@
 <script src="js/fire.js?v=24"></script>
 <script src="js/app.js?v=24"></script>
 <script src="js/compare.js?v=24"></script>
+  
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const target = document.getElementById("borneo-fire-chart");
+  const data = window.FUEGO;
+
+  if (!target || !data?.regions?.borneo) return;
+
+  const months = data.months;
+  const counts = data.regions.borneo.hotspots;
+
+  const values = months
+    .map((month, i) => ({
+      month,
+      count: counts[i]
+    }))
+    .filter(d => d.month.startsWith("2015-"));
+
+  const max = Math.max(...values.map(d => d.count));
+
+  target.innerHTML = values.map(d => {
+    const label = new Date(d.month + "-01")
+      .toLocaleString("en-US", { month: "short", timeZone: "UTC" });
+
+    const width = (d.count / max) * 100;
+
+    return `
+      <div class="fire-bar-row">
+        <span>${label}</span>
+        <div class="fire-bar-track">
+          <div class="fire-bar" style="width:${width}%"></div>
+        </div>
+        <span>${d.count.toLocaleString("en-US")}</span>
+      </div>
+    `;
+  }).join("");
+});
+</script>
+
 </body>
 </html>
