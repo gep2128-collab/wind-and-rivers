@@ -213,6 +213,7 @@
 <script src="js/app.js?v=24"></script>
 <script src="js/compare.js?v=24"></script>
   
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const target = document.getElementById("borneo-fire-chart");
@@ -220,36 +221,65 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!target || !data?.regions?.borneo) return;
 
-  const months = data.months;
-  const counts = data.regions.borneo.hotspots;
+  const years = Array.from(
+    { length: 21 },
+    (_, i) => 2005 + i
+  );
 
-  const values = months
-    .map((month, i) => ({
-      month,
-      count: counts[i]
-    }))
-    .filter(d => d.month.startsWith("2015-"));
+  target.innerHTML = `
+    <div class="fire-year-control">
+      <label for="fire-year">Select year:</label>
+      <select id="fire-year">
+        ${years.map(y =>
+          `<option value="${y}" ${y === 2015 ? "selected" : ""}>${y}</option>`
+        ).join("")}
+      </select>
+    </div>
+    <div id="fire-year-bars"></div>
+  `;
 
-  const max = Math.max(...values.map(d => d.count));
+  const select = document.getElementById("fire-year");
+  const bars = document.getElementById("fire-year-bars");
 
-  target.innerHTML = values.map(d => {
-    const label = new Date(d.month + "-01")
-      .toLocaleString("en-US", { month: "short", timeZone: "UTC" });
+  function render(year) {
+    const values = data.months
+      .map((month, i) => ({
+        month,
+        count: data.regions.borneo.hotspots[i]
+      }))
+      .filter(d => d.month.startsWith(year + "-"));
 
-    const width = (d.count / max) * 100;
+    const max = Math.max(1, ...values.map(d => d.count));
 
-    return `
-      <div class="fire-bar-row">
-        <span>${label}</span>
-        <div class="fire-bar-track">
-          <div class="fire-bar" style="width:${width}%"></div>
+    bars.innerHTML = values.map(d => {
+      const label = new Date(d.month + "-01T00:00:00Z")
+        .toLocaleString("en-US", {
+          month: "short",
+          timeZone: "UTC"
+        });
+
+      const width = (d.count / max) * 100;
+
+      return `
+        <div class="fire-bar-row">
+          <span>${label}</span>
+          <div class="fire-bar-track">
+            <div class="fire-bar" style="width:${width}%"></div>
+          </div>
+          <span>${d.count.toLocaleString("en-US")}</span>
         </div>
-        <span>${d.count.toLocaleString("en-US")}</span>
-      </div>
-    `;
-  }).join("");
+      `;
+    }).join("");
+  }
+
+  select.addEventListener("change", () => {
+    render(select.value);
+  });
+
+  render("2015");
 });
 </script>
+
 
 </body>
 </html>
