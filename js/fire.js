@@ -44,6 +44,29 @@ function drawFire(c,key){
   }
   c.imageSmoothingEnabled=true;
 }
+// Whole-year view (story map, chapter 5): hotspots summed over the 12 months of one year per region.
+// FIRE_YEAR = {amazon: 2024, borneo: 2015}, set from the URL (fy=amazon:2024,borneo:2015 or fy=2015).
+let FIRE_YEAR={},fireYearCache={key:null,imgs:[]};
+function drawFireYear(c){
+  if(!window.FIRE_INFO)return;const key=JSON.stringify(FIRE_YEAR);
+  if(fireYearCache.key!==key){
+    let ready=true;const imgs=[];
+    for(const r in FIRE_INFO.regions){
+      const y=FIRE_YEAR[r];if(!y)continue;const d=FIRE.years[r]&&FIRE.years[r][y];if(!d){fireLoad(r,y);ready=false;continue;}
+      const sum=new Uint32Array(d.nx*d.ny);for(const k in d.months){const a=d.months[k];for(let n=0;n<a.length;n++)sum[n]+=a[n];}
+      const cv=document.createElement('canvas');cv.width=d.nx;cv.height=d.ny;const o=cv.getContext('2d'),img=o.createImageData(d.nx,d.ny);
+      for(let n=0;n<sum.length;n++){if(!sum[n])continue;const t=Math.min(255,Math.round(Math.log10(sum[n])/Math.log10(3000)*255));img.data.set(FIRE_LUT[t],n*4);}
+      o.putImageData(img,0,0);imgs.push({cv,d});
+    }
+    fireYearCache={key:ready?key:null,imgs};
+  }
+  c.globalAlpha=1;c.imageSmoothingEnabled=false;
+  for(const {cv,d} of fireYearCache.imgs){
+    const a=proj([d.lon0-d.dlon/2,d.lat0-d.dlat/2]),b=proj([d.lon0+(d.nx-.5)*d.dlon,d.lat0+(d.ny-.5)*d.dlat]);
+    c.drawImage(cv,a[0],a[1],b[0]-a[0],b[1]-a[1]);
+  }
+  c.imageSmoothingEnabled=true;
+}
 function fireAt(lon,lat,key){
   if(!window.FIRE_INFO)return null;const y=+key.slice(0,4);
   for(const r in FIRE_INFO.regions){

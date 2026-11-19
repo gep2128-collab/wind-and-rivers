@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>El Niño-Driven Wildfires: the story</title>
+<meta name="description" content="A Comparative Data Study of the Amazon and Borneo Rainforests, told one step at a time: El Niño, ocean, dryness, wildfire, biodiversity.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/story.css?v=4">
+</head>
+<body>
+<!-- The map is the explorer page (index.html) with its panels hidden; each chapter changes it through the URL. -->
+<div id="mapbox">
+  <iframe id="mapframe" title="Map" src="index.html#t=2026-10&z=world&ui=0&l=sst" tabindex="-1"></iframe>
+  <div id="state">OCT 2026 · Sea temperature</div>
+  <nav id="rail" aria-label="Chapters"></nav>
+</div>
+<main id="story"></main>
+
+<script src="data/public/enso.js"></script>
+<script src="data/public/clima_regional.js"></script>
+<script src="data/public/fuego_mensual.js"></script>
+<script src="data/public/co2_regional.js"></script>
+<script src="data/public/especies.js"></script>
+<script src="data/public/oxigeno.js"></script>
+<script src="js/icons.js?v=4"></script>
+<script src="js/story.js?v=5"></script>
+</body>
+</html>
