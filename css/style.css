@@ -73,3 +73,42 @@ a.btn.acc{border-color:#ffa51f;color:#ffa51f}a.btn:hover{background:rgba(255,255
 .fine{font-size:11px;color:var(--mut);line-height:1.5;margin-top:16px}
 @media (max-width:760px){.cards{grid-template-columns:1fr}#compare h2,#sim h2{font-size:24px}}
 #sim{min-height:70vh}
+
+/* ---- Beyond El Niño: Human-Made Fire Frontier ---- */
+#frontier {
+  background: #111113;
+  border-top: 1px solid var(--bd);
+  padding: 72px 16px;
+}
+
+#frontier h2 {
+  font-size: 30px;
+  margin: 6px 0 16px;
+  color: #ffa51f;
+}
+
+#frontier p {
+  max-width: 760px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--ink);
+  margin: 0 0 20px;
+}
+
+#frontier .lede {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--mut);
+  max-width: 760px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 760px) {
+  #frontier {
+    padding: 48px 16px;
+  }
+
+  #frontier h2 {
+    font-size: 24px;
+  }
+}
