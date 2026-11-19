@@ -274,10 +274,15 @@ function tick() {
         const ny = y + dy;
 
         if (nx < 0 || nx >= W || ny < 0 || ny >= H) continue;
-        if (grid[ny][nx] !== FOREST) continue;
+        if (grid[ny][nx] !== FOREST &&
+    grid[ny][nx] !== TRANSFORMED) continue;
 
         let probability = 0.15 + 0.55 * dry;
-
+// Hypothetical land-transformation effect.
+// Not calibrated to observed wildfire behavior.
+if (grid[ny][nx] === TRANSFORMED) {
+  probability *= 1.4;
+}
         // Eastward wind favors eastward spread.
         if (dx === 1) {
           probability += 0.25 * eastWind;
