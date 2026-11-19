@@ -11,7 +11,8 @@ const X={};for(const k in C)X[k]=C[k].getContext('2d');
 const proj=d3.geoEquirectangular();
 let W=0,H=0,dpr=1,T=d3.zoomIdentity,landPath,riverGroups=[],riverLabels=[];
 const land=topojson.feature(LAND,LAND.objects.land);
-const layers={wind:true,rivers:true,sst:true,fire:true,t2m:false,tp:false,rad:false,cloud:false};
+const layers={wind:true,rivers:true,sst:true,fire:true,t2m:false,tp:false,rad:false,cloud:false,fireyear:false};
+let LABELS=''; // lab=stake in the URL writes what is at stake next to each study area (story map)
 
 let Y0=2005,Y1=2026,tm=0;tm=lastDataTm()??(2024-Y0)*12;
 let playing=false,DATA=[];
@@ -59,7 +60,7 @@ function insol(lat,m){
 function monthF(){return ((tm%12)+12)%12+1;}
 function drawRad(){
   const c=X.rad;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W*dpr,H*dpr);
-  if(!layers.rad&&!layers.cloud&&!layers.sst&&!layers.t2m&&!layers.tp&&!layers.fire)return;
+  if(!layers.rad&&!layers.cloud&&!layers.sst&&!layers.t2m&&!layers.tp&&!layers.fire&&!layers.fireyear)return;
   setT(c);
   if(layers.sst)drawSST(c);
   if(layers.t2m){c.globalAlpha=.85;drawSets(c,'t2m',v=>d3.interpolateRdYlBu(1-Math.max(0,Math.min(1,(v-10)/25))));}
@@ -75,6 +76,7 @@ function drawRad(){
     else{const a=proj([-180,90]),b=proj([180,-90]);c.imageSmoothingEnabled=true;c.drawImage(demoCloudImage(),a[0],a[1],b[0]-a[0],b[1]-a[1]);}
   }
   if(layers.fire&&window.drawFire)drawFire(c,monthKey());
+  if(layers.fireyear&&window.drawFireYear)drawFireYear(c);
   c.globalAlpha=1;
 }
 // Demo cloud cover (0-1), a rough climatology: ITCZ band that follows the season,
@@ -162,6 +164,29 @@ function drawZones(){
     c.shadowBlur=0;c.shadowColor='transparent';c.fillText(nm,a[0],a[1]-7);
   }
   c.lineCap='butt';
+  if(LABELS==='stake')drawStake(c);
+}
+// What is at stake, written next to each study area (lab=stake): the year of the whole-year fire view,
+// its hotspots (FIRMS), its fire CO₂ as a share of what the forest takes up in a year (GFED5.1 / CAMS GFAS, MODIS NPP)
+// and the share of mammal species threatened (GBIF + IUCN categories).
+function stakeLines(r){
+  const y=FIRE_YEAR[r],out=[`${ZONES[r].name.toUpperCase()} · FIRES OF ${y||''}`];
+  if(y&&window.FUEGO){let n=0;FUEGO.months.forEach((m,i)=>{if(m.startsWith(y+'-'))n+=FUEGO.regions[r].hotspots[i]||0;});out.push(`${n.toLocaleString('en')} fire hotspots`);}
+  if(y&&window.CO2&&window.OXIGENO){let v=0,k=0;CO2.months.forEach((m,i)=>{if(m.startsWith(y+'-')&&CO2.regions[r].co2_mt[i]!=null){v+=CO2.regions[r].co2_mt[i];k++;}});
+    const up=OXIGENO.regions[r]['2022'].co2_uptake_mt;if(k)out.push(`fire CO₂ = ${(100*v/up).toFixed(1)}% of a year's uptake`);}
+  if(window.ESPECIES)out.push(`${ESPECIES.regions[r].mammals.threatened_pct}% of mammal species threatened`);
+  return out;
+}
+function drawStake(c){
+  c.textBaseline='top';
+  for(const r in ZONES){
+    const [w,s,e,n]=ZONES[r].b,a=scr(w,n),b=scr(e,s),L=stakeLines(r);
+    c.font='bold 12px Arimo,Arial,sans-serif';const tw=Math.max(...L.map((t,i)=>(c.font=(i?'':'bold ')+'12px Arimo,Arial,sans-serif',c.measureText(t).width)))+20;
+    const h=L.length*17+12,x=Math.max(6,Math.min(W-tw-6,a[0])),y=Math.min(H-h-6,b[1]+8);
+    c.fillStyle='rgba(11,11,12,.88)';c.strokeStyle=ZONE_COLOR;c.lineWidth=1;c.beginPath();c.roundRect(x,y,tw,h,6);c.fill();c.stroke();
+    L.forEach((t,i)=>{c.font=(i?'':'bold ')+'12px Arimo,Arial,sans-serif';c.fillStyle=i?'#ecebe6':ZONE_COLOR;c.fillText(t,x+10,y+8+i*17);});
+  }
+  c.textBaseline='alphabetic';
 }
 // Still part of the rivers (deep-teal banks + light-cyan water), cached until the view changes.
 const rivStatic=document.createElement('canvas');let rivLast=0,rivDirty=true;
@@ -305,6 +330,7 @@ function updNote(){
   if(layers.sst)p.push('Sea temp: ERA5 anomaly vs 1991–2020');
   if(window.ENSO)p.push('El Niño: NOAA ONI');
   if(layers.fire&&window.FIRE_INFO)p.push('Fire: NASA FIRMS');
+  if(layers.fireyear&&window.FIRE_INFO)p.push('Fire: NASA FIRMS, hotspots summed over the year');
   if(layers.t2m)p.push('Air temp: ERA5');
   if(layers.tp)p.push('Rain: ERA5');
   if(layers.rivers)p.push('Rivers: Natural Earth');
@@ -351,7 +377,11 @@ addEventListener('resize',()=>{resize();seed();});
 function applyHash(){
   const h=new URLSearchParams(location.hash.slice(1)),t=h.get('t'),z=h.get('z');
   if(h.has('l')){const on=h.get('l').split(',');for(const k in layers)layers[k]=on.includes(k);
-    document.querySelectorAll('#layers button').forEach(b=>b.classList.toggle('on',layers[b.dataset.l]));redrawStatic();updNote();}
+    document.querySelectorAll('#layers button').forEach(b=>b.classList.toggle('on',layers[b.dataset.l]));}
+  // fy=amazon:2024,borneo:2015 (or fy=2015) picks the year of the whole-year fire view
+  if(h.has('fy')){FIRE_YEAR={};for(const p of h.get('fy').split(',')){const [a,b]=p.split(':');if(b)FIRE_YEAR[a]=+b;else for(const r in ZONES)FIRE_YEAR[r]=+a;}}
+  LABELS=h.get('lab')||'';
+  if(h.has('l')||h.has('fy')||h.has('lab')){redrawStatic();updNote();}
   if(t&&/^\d{4}-\d{2}$/.test(t)){tm=(+t.slice(0,4)-Y0)*12+(+t.slice(5)-1);const ld=lastDataTm();if(ld!=null&&tm>ld)tm=ld;if(tm<0)tm=0;syncUI();drawRad();}
   document.body.classList.toggle('clean',h.get('ui')==='0');
   if(z&&(z==='world'||ZONES[z]))flyTo(z);

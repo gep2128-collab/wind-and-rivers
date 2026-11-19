@@ -97,9 +97,10 @@ const CH=[
  {rail:4,t:'2015-09',z:'amazon',l:'fire',state:'Fire hotspots',kick:'4 · Wildfire',h:'In the Amazon, people light it every year',
   body:'<p>The same months of 2015 had only 1.3 times more hotspots than usual, and the link with rain is weak. Fire comes every year, El Niño or not: forest clearing and farm burning.</p><p><b>Dryness is the condition; people are the spark.</b></p>',
   src:[SRC.fire],next:'Scroll: what is at stake'},
- {rail:5,t:'2026-10',z:'world',l:'',state:'Study areas',kick:'5 · What is at stake',h:'A quarter of Borneo’s mammals are threatened',
-  body:()=>{const b=stake('borneo');return `<p>Two of the richest forests on Earth. In ${b.worstY}, Borneo’s fires released ${b.worst}% of the CO₂ its forest takes up in a year${b.ytd!=null?`; in ${b.last} it is already ${b.ytd}%`:''}.</p>`;},
-  chartTitle:'Amazon vs Borneo',chart:stakeChart,src:[SRC.stake],next:'Scroll: explore'},
+ {rail:5,t:'2026-10',z:'world',l:'fireyear',q:()=>`&fy=amazon:${stake('amazon').worstY},borneo:${stake('borneo').worstY}&lab=stake`,
+  stateFull:()=>`Fire hotspots in the worst year · Amazon ${stake('amazon').worstY} · Borneo ${stake('borneo').worstY}`,state:'',kick:'5 · What is at stake',h:'A quarter of Borneo’s mammals are threatened',
+  body:()=>{const b=stake('borneo');return `<p>Two of the richest forests on Earth. In ${b.worstY}, Borneo’s fires released ${b.worst}% of the CO₂ its forest takes up in a year${b.ytd!=null?`; in ${b.last} it is already ${b.ytd}%`:''}.</p><p class="note">Map: every fire hotspot of each forest’s worst fire year, with what is at stake written beside it.</p>`;},
+  chartTitle:'Amazon vs Borneo',chart:stakeChart,src:[SRC.stake,SRC.fire],next:'Scroll: explore'},
  {rail:6,t:'2026-10',z:'world',l:'wind,sst,fire,rivers',state:'All layers',kick:'6 · Explore',h:'Every layer, any month',
   body:'<p>Switch on wind, clouds, rain or fire for any month from 2005 to 2026, or compare the two forests side by side.</p>',
   extra:'<a class="btn solid" href="index.html">Open the explorer →</a><a class="btn" href="index.html#compare">Compare the two forests →</a>',src:[SRC.map]}];
@@ -117,8 +118,8 @@ rail.innerHTML=RAIL.map((n,r)=>`<a href="#ch${CH.findIndex(c=>c.rail===r)}" data
 const frame=document.getElementById('mapframe'),state=document.getElementById('state');let cur=-1;
 function go(i){if(i===cur)return;cur=i;const c=CH[i];
   // only the fragment changes, so the map page is not reloaded
-  frame.src=`index.html#t=${c.t}&z=${c.z}&ui=0&l=${c.l}`;
-  state.textContent=`${MES[+c.t.slice(5)-1].toUpperCase()} ${c.t.slice(0,4)} · ${c.state}`;
+  frame.src=`index.html#t=${c.t}&z=${c.z}&ui=0&l=${c.l}${val(c.q)}`;
+  state.textContent=c.stateFull?val(c.stateFull):`${MES[+c.t.slice(5)-1].toUpperCase()} ${c.t.slice(0,4)} · ${c.state}`;
   rail.querySelectorAll('a').forEach(a=>a.classList.toggle('on',+a.dataset.r===c.rail));}
 // the chapter that crosses the middle of the screen sets the map
 const secs=[...document.querySelectorAll('.chapter')];let tick=false;
