@@ -215,8 +215,14 @@ function reset() {
   // Same ignition location in both scenarios.
   grid[20][8] = BURNING;
 
-  initialBurnable = grid.flat()
-    .filter(v => v === FOREST).length + 1;
+  
+initialBurnable = grid.flat()
+  .filter(v =>
+    v === FOREST ||
+    v === TRANSFORMED ||
+    v === BURNING
+  ).length;
+
 
   updateStats();
   draw();
