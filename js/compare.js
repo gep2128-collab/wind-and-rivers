@@ -33,24 +33,26 @@
     let t=null,p=null;if(window.CLIMA&&CLIMA.regions[r]){const c=CLIMA.regions[r];t=byPhase(CLIMA.months,c.t2m.anom).nino;
       const pa=byPhase(CLIMA.months,c.tp.anom).nino,pn=mean(c.tp.normal);p=pn?100*pa/pn:null;}
     const E=window.ESPECIES&&ESPECIES.regions[r];
-    const st=(v,l,cls='')=>`<div class="stat"><b class="${cls}">${v}</b><span>${l}</span></div>`;
+    // ic = icon from js/icons.js for what the number is about
+    const ico=(n,sz)=>window.iconSvg&&n?iconSvg(n,sz):'';
+    const st=(v,l,cls='',ic='')=>`<div class="stat"><b class="${cls}">${ico(ic,20)}${v}</b><span>${l}</span></div>`;
     const share=o&&co2Max!=null?100*co2Max/o.co2_uptake_mt:null;
-    const lifeRow=(k,label)=>E&&E[k]?`<tr><td>${label}</td><td>${nf(E[k].species)} species</td><td class="thr">${nf(E[k].threatened_pct,1)}% threatened</td></tr>`:'';
+    const lifeRow=(k,label,ic)=>E&&E[k]?`<tr><td>${ico(ic,15)}${label}</td><td>${nf(E[k].species)} species</td><td class="thr">${nf(E[k].threatened_pct,1)}% threatened</td></tr>`:'';
     return `<article class="card" data-r="${r}">
       <div><h3>${R.name.toUpperCase()}</h3><div class="where">${lat(b[1])}–${lat(b[3])} · ${lon(b[0])}–${lon(b[2])} · study area ${nf(boxArea(b)/1e6,2)} million km²</div></div>
       <div class="grp"><div class="gt">Forest and air · normal year (2022)</div><div class="stats">
-        ${st(o?nf(o.o2_mt)+' Mt':'—','O₂ released by the vegetation in a year','cyan')}
-        ${st(o?nf(o.co2_uptake_mt)+' Mt':'—','CO₂ taken up by the vegetation in a year','cyan')}
+        ${st(o?nf(o.o2_mt)+' Mt':'—','O₂ released by the vegetation in a year','cyan','leaf')}
+        ${st(o?nf(o.co2_uptake_mt)+' Mt':'—','CO₂ taken up by the vegetation in a year','cyan','leaf')}
       </div></div>
       <div class="grp"><div class="gt">Fire</div><div class="stats">
-        ${st(co2Avg!=null?nf(co2Avg)+' Mt':'—','CO₂ from fires per year, average of full years 2005–2025','red')}
-        ${st(co2Max!=null?nf(co2Max)+' Mt':'—',co2MaxY?`CO₂ from fires in ${co2MaxY}, the worst year`+(share!=null?` · ${nf(share,1)}% of what the forest takes up in a year`:''):'Worst year','red')}
-        ${ytd?st(nf(ytd.v)+' Mt',`CO₂ from fires in ${ytd.y} so far (Jan–${MES[+ytd.to.slice(5)-1]}, estimate)`+(o?` · ${nf(100*ytd.v/o.co2_uptake_mt,1)}% of a year's uptake`:''),'red'):''}
-        ${st(hot&&hot.neutral?'×'+nf(hot.nino/hot.neutral,2):'—','Fire hotspots in El Niño months vs neutral months','org')}
-        ${st(t!=null?sg(t)+' °C':'—',`Air temperature in El Niño months vs normal${p!=null?` · rain ${sg(p,0)}%`:''}`,'org')}
+        ${st(co2Avg!=null?nf(co2Avg)+' Mt':'—','CO₂ from fires per year, average of full years 2005–2025','red','cloud')}
+        ${st(co2Max!=null?nf(co2Max)+' Mt':'—',co2MaxY?`CO₂ from fires in ${co2MaxY}, the worst year`+(share!=null?` · ${nf(share,1)}% of what the forest takes up in a year`:''):'Worst year','red','cloud')}
+        ${ytd?st(nf(ytd.v)+' Mt',`CO₂ from fires in ${ytd.y} so far (Jan–${MES[+ytd.to.slice(5)-1]}, estimate)`+(o?` · ${nf(100*ytd.v/o.co2_uptake_mt,1)}% of a year's uptake`:''),'red','cloud'):''}
+        ${st(hot&&hot.neutral?'×'+nf(hot.nino/hot.neutral,2):'—','Fire hotspots in El Niño months vs neutral months','org','flame')}
+        ${st(t!=null?sg(t)+' °C':'—',`Air temperature in El Niño months vs normal${p!=null?` · rain ${sg(p,0)}%`:''}`,'org','thermo')}
       </div></div>
       <div class="grp"><div class="gt">Life recorded in the area</div>
-        <table class="life">${lifeRow('plants','Plants')}${lifeRow('animals','Animals')}${lifeRow('mammals','· Mammals')}${lifeRow('birds','· Birds')}${lifeRow('amphibians','· Amphibians')}</table>
+        <table class="life">${lifeRow('plants','Plants','leaf')}${lifeRow('animals','Animals','bug')}${lifeRow('mammals','· Mammals','mammal')}${lifeRow('birds','· Birds','bird')}${lifeRow('amphibians','· Amphibians','amphibian')}</table>
       </div>
       <button class="go" data-r="${r}">Start a fire in ${R.pilot} →</button>
     </article>`;
